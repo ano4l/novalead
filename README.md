@@ -12,7 +12,7 @@ NovaLeads is a Next.js marketing site for an AI-powered lead generation business
 ## Local Development
 
 ```bash
-npm install --legacy-peer-deps
+npm install
 npm run dev
 ```
 

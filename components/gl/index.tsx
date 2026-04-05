@@ -1,46 +1,24 @@
-import { Perf } from "r3f-perf";
 import { Effects } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useControls } from "leva";
 import { Particles } from "./particles";
 import { VignetteShader } from "./shaders/vignetteShader";
 
 export const GL = ({ hovering }: { hovering: boolean }) => {
-  const {
-    speed,
-    focus,
-    aperture,
-    size,
-    noiseScale,
-    noiseIntensity,
-    timeScale,
-    pointSize,
-    opacity,
-    planeScale,
-    vignetteDarkness,
-    vignetteOffset,
-    useManualTime,
-    manualTime,
-  } = useControls("Particle System", {
-    speed: { value: 1.0, min: 0, max: 2, step: 0.01 },
-    noiseScale: { value: 0.48, min: 0.1, max: 5, step: 0.1 },
-    noiseIntensity: { value: 0.34, min: 0, max: 2, step: 0.01 },
-    timeScale: { value: 0.84, min: 0, max: 2, step: 0.01 },
-    focus: { value: 3.8, min: 0.1, max: 20, step: 0.1 },
-    aperture: { value: 1.62, min: 0, max: 2, step: 0.01 },
-    pointSize: { value: 7.4, min: 0.1, max: 10, step: 0.1 },
-    opacity: { value: 0.44, min: 0, max: 1, step: 0.01 },
-    planeScale: { value: 10.0, min: 0.1, max: 10, step: 0.1 },
-    size: {
-      value: 512,
-      options: [256, 512, 1024],
-    },
-    showDebugPlane: { value: false },
-    vignetteDarkness: { value: 1.75, min: 0, max: 2, step: 0.1 },
-    vignetteOffset: { value: 0.52, min: 0, max: 2, step: 0.1 },
-    useManualTime: { value: false },
-    manualTime: { value: 0, min: 0, max: 50, step: 0.01 },
-  });
+  const speed = 1.0;
+  const focus = 3.8;
+  const aperture = 1.62;
+  const size = 512;
+  const noiseScale = 0.48;
+  const noiseIntensity = 0.34;
+  const timeScale = 0.84;
+  const pointSize = 7.4;
+  const opacity = 0.44;
+  const planeScale = 10.0;
+  const vignetteDarkness = 1.75;
+  const vignetteOffset = 0.52;
+  const useManualTime = false;
+  const manualTime = 0;
+
   return (
     <div id="webgl">
       <Canvas
@@ -53,7 +31,6 @@ export const GL = ({ hovering }: { hovering: boolean }) => {
           far: 300,
         }}
       >
-        {/* <Perf position="top-left" /> */}
         <color attach="background" args={["#000"]} />
         <Particles
           speed={speed}
