@@ -17,11 +17,11 @@
 }
 
 :root {
-  --background: #05060c;
-  --foreground: #f7f4ef;
-  --primary: #ff8b5a;
+  --background: #081947;
+  --foreground: #f6f8ff;
+  --primary: #e1262d;
   --primary-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.12);
+  --border: rgba(233, 238, 249, 0.18);
 }
 
 @utility container {
@@ -52,7 +52,11 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 18% 16%, rgba(233, 238, 249, 0.16), transparent 20%),
+    radial-gradient(circle at 82% 12%, rgba(225, 38, 45, 0.16), transparent 22%),
+    radial-gradient(circle at 50% 100%, rgba(122, 147, 223, 0.14), transparent 30%),
+    linear-gradient(180deg, #1d3f9e 0%, #12327f 18%, #0a225f 56%, #081947 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
   min-height: 100vh;
@@ -60,7 +64,8 @@ body {
 }
 
 body::selection {
-  background: rgba(255, 139, 90, 0.28);
+  background: rgba(225, 38, 45, 0.32);
+  color: #ffffff;
 }
 
 #webgl {
@@ -70,6 +75,7 @@ body::selection {
   height: 100svh;
   width: 100%;
   pointer-events: none;
+  opacity: 0.96;
 }
 
 #webgl canvas {

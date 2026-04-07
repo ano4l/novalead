@@ -1,428 +1,422 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { GL } from "./gl";
+import { HeroEffects } from "./hero-effects";
 import { Pill } from "./pill";
 import { Button } from "./ui/button";
+
+const capabilityItems = [
+  {
+    title: "Lead generation",
+    body: "Targeted demand generation shaped around the clients you actually want.",
+  },
+  {
+    title: "Sales support",
+    body: "Cleaner follow-up, faster response, and better handoff between interest and action.",
+  },
+  {
+    title: "Brand and web",
+    body: "Sharper positioning, websites, and landing pages that earn trust early.",
+  },
+  {
+    title: "Automation",
+    body: "Practical systems that remove drag without removing the human touch.",
+  },
+] as const;
 
 const serviceItems = [
   {
     id: "01",
-    title: "AI receptionists",
-    body: "Capture after-hours calls, answer common questions, qualify intent, and route serious leads before they cool off.",
+    title: "Lead generation",
+    body: "Campaigns, offers, and outreach designed around the market you want to win in, not generic traffic for its own sake.",
   },
   {
     id: "02",
-    title: "Lead generation campaigns",
-    body: "Bring the right traffic in through targeted ads and offers designed around actual service demand, not vanity reach.",
+    title: "Sales and business development",
+    body: "Support across follow-up, conversion flow, and the simple systems that help good conversations turn into real opportunities.",
   },
   {
     id: "03",
-    title: "Landing pages and websites",
-    body: "Shape the conversion path so people understand your offer quickly and know exactly how to enquire or book.",
+    title: "Marketing and branding",
+    body: "Clearer messaging, stronger positioning, and a sharper digital presence that helps people trust the business faster.",
   },
   {
     id: "04",
-    title: "Follow-up automation",
-    body: "Keep leads warm with reminders, nurture sequences, and CRM updates that reduce admin load for your team.",
+    title: "Consulting and strategy",
+    body: "Honest guidance on what needs attention first, what can wait, and where growth is getting slowed down unnecessarily.",
+  },
+  {
+    id: "05",
+    title: "Business process automation",
+    body: "Thoughtful automation that replaces repetitive manual work so the team can focus on higher-value tasks.",
   },
 ] as const;
 
 const processItems = [
   {
     id: "01",
-    title: "Attract qualified demand",
-    body: "Targeted paid traffic brings the right people into a sharper, conversion-first environment.",
+    title: "Diagnose",
+    body: "We look closely at the business as it is now: goals, offer, market, bottlenecks, and the processes that are quietly holding growth back.",
   },
   {
     id: "02",
-    title: "Convert the click cleanly",
-    body: "Landing pages and forms reduce hesitation, clarify the offer, and guide serious leads into the next step.",
+    title: "Design",
+    body: "We shape a plan around your stage of growth, blending the right mix of positioning, lead flow, sales support, and automation.",
   },
   {
     id: "03",
-    title: "Answer and qualify instantly",
-    body: "AI receptionists handle missed calls and inbound interest immediately, even when your team is unavailable.",
-  },
-  {
-    id: "04",
-    title: "Book, remind, and optimise",
-    body: "Calendar flow, reminders, and reporting keep leads moving and show what to improve over time.",
+    title: "Deploy",
+    body: "We build and launch alongside you with clear milestones, useful reporting, and a focus on outcomes that matter in the real business.",
   },
 ] as const;
 
+const signalItems = [
+  { value: "Lower", label: "admin drag" },
+  { value: "Faster", label: "sales response" },
+  { value: "Sharper", label: "execution" },
+] as const;
+
+const principleItems = [
+  "Tailored to your market",
+  "Built around your sales style",
+  "Specific to your audience",
+  "Designed for your growth stage",
+  "Replacing old with better",
+] as const;
+
 const resultItems = [
-  { value: "24/7", label: "AI receptionist coverage" },
-  { value: "20+", label: "websites and funnels built" },
-  { value: "100+", label: "leads generated" },
+  {
+    title: "Clearer positioning",
+    body: "People understand the value of the business faster, which makes every campaign and conversation work harder.",
+  },
+  {
+    title: "Better response flow",
+    body: "Enquiries get handled with more consistency, less delay, and fewer opportunities slipping through the cracks.",
+  },
+  {
+    title: "Smarter operations",
+    body: "The business feels lighter to run because repetitive tasks, clunky handoffs, and old workarounds start to disappear.",
+  },
+] as const;
+
+const industryItems = [
+  "Healthcare",
+  "Real estate",
+  "Professional services",
+  "Logistics and machinery",
+  "Non-profits",
+  "Local service businesses",
+  "Growing SMEs",
+] as const;
+
+const locationItems = [
+  "Cape Town",
+  "Johannesburg",
+  "Working beyond South Africa",
 ] as const;
 
 const faqItems = [
   {
-    question: "How does NovaLeads generate leads?",
+    question: "What kind of work does NovaLeads actually do?",
     answer:
-      "NovaLeads combines targeted traffic, conversion-focused pages, AI call handling, and automated follow-up so serious enquiries move toward a booking faster.",
+      "NovaLeads works across lead generation, sales support, branding, websites, strategy, and automation. The mix depends on what the business actually needs, not on a fixed package.",
   },
   {
-    question: "Do I need an existing website?",
+    question: "Is this only for businesses that want AI or automation?",
     answer:
-      "No. A campaign-specific landing page can be built from scratch, or your current website can be improved and connected to the system.",
+      "No. Automation is used where it improves speed, consistency, or admin load. The goal is a better-running business, not forcing technology where it does not belong.",
   },
   {
-    question: "What businesses fit this best?",
+    question: "Do I need a brand-new website before we start?",
     answer:
-      "Service businesses, local trades, consultants, coaches, and SMEs that depend on a steady flow of enquiries tend to be the best fit.",
+      "Not necessarily. Sometimes the right move is a new landing page or a sharper site. Sometimes it is messaging, follow-up, or strategy first. We diagnose before we prescribe.",
   },
   {
     question: "Do you only work in South Africa?",
     answer:
-      "No. NovaLeads is based in South Africa and can also support international businesses that need cleaner lead acquisition systems.",
+      "NovaLeads is based in South Africa and can support businesses locally as well as teams operating in other markets.",
   },
 ] as const;
 
-const marketItems = [
-  "Real estate",
-  "Professional services",
-  "Fitness",
-  "Beauty",
-  "Coaching",
-  "Home services",
-  "Local trades",
-] as const;
-
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
+const panelClass =
+  "relative overflow-hidden rounded-[2rem] border border-white/16 bg-[rgba(233,238,249,0.12)] p-6 shadow-[0_28px_80px_rgba(8,25,72,0.22)] backdrop-blur-xl md:p-7";
 
 export function Hero() {
-  const [hovering, setHovering] = useState(false);
-
-  const heroRef = useRef<HTMLElement | null>(null);
-  const heroTitleRef = useRef<HTMLHeadingElement | null>(null);
-  const heroGlowRef = useRef<HTMLDivElement | null>(null);
-  const processRef = useRef<HTMLElement | null>(null);
-  const processLineRef = useRef<HTMLDivElement | null>(null);
-  const processDotRef = useRef<HTMLDivElement | null>(null);
-  const signalStepRef = useRef<HTMLSpanElement | null>(null);
-  const signalTitleRef = useRef<HTMLHeadingElement | null>(null);
-  const signalBodyRef = useRef<HTMLParagraphElement | null>(null);
-  const stepRefs = useRef<Array<HTMLElement | null>>([]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-
-    const applyActiveStep = (activeIndex: number) => {
-      const current = processItems[activeIndex];
-
-      stepRefs.current.forEach((step, index) => {
-        if (!step) return;
-        step.dataset.active = index === activeIndex ? "true" : "false";
-      });
-
-      if (signalStepRef.current) signalStepRef.current.textContent = current.id;
-      if (signalTitleRef.current) {
-        signalTitleRef.current.textContent = current.title;
-      }
-      if (signalBodyRef.current) signalBodyRef.current.textContent = current.body;
-    };
-
-    const updateScrollEffects = () => {
-      const reduceMotion = mediaQuery.matches;
-
-      if (heroRef.current && heroTitleRef.current && heroGlowRef.current) {
-        const rect = heroRef.current.getBoundingClientRect();
-        const progress = clamp(
-          -rect.top / Math.max(rect.height * 0.62, 1),
-          0,
-          1
-        );
-
-        if (reduceMotion) {
-          heroTitleRef.current.style.transform = "";
-          heroGlowRef.current.style.transform = "translateX(-50%)";
-          heroGlowRef.current.style.opacity = "0.9";
-        } else {
-          heroTitleRef.current.style.transform = `translate3d(0, ${(
-            progress * 36
-          ).toFixed(1)}px, 0) scale(${(1 - progress * 0.06).toFixed(3)})`;
-          heroGlowRef.current.style.transform = `translateX(-50%) scale(${(
-            1 - progress * 0.12
-          ).toFixed(3)})`;
-          heroGlowRef.current.style.opacity = `${(0.9 - progress * 0.42).toFixed(
-            3
-          )}`;
-        }
-      }
-
-      const visibleSteps = stepRefs.current.filter(
-        (step): step is HTMLElement => step !== null
-      );
-
-      if (!processRef.current || visibleSteps.length === 0) {
-        return;
-      }
-
-      const processRect = processRef.current.getBoundingClientRect();
-      const travel = Math.max(processRect.height - window.innerHeight * 0.72, 1);
-      const progress = clamp(
-        (window.innerHeight * 0.18 - processRect.top) / travel,
-        0,
-        1
-      );
-
-      if (processLineRef.current) {
-        processLineRef.current.style.height = `${(progress * 70).toFixed(2)}%`;
-      }
-
-      if (processDotRef.current) {
-        processDotRef.current.style.top = `calc(15% + ${(progress * 70).toFixed(
-          2
-        )}%)`;
-      }
-
-      const targetLine = window.innerHeight * 0.42;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      visibleSteps.forEach((step, index) => {
-        const rect = step.getBoundingClientRect();
-        const middle = rect.top + rect.height / 2;
-        const distance = Math.abs(middle - targetLine);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      applyActiveStep(closestIndex);
-    };
-
-    const requestUpdate = () => {
-      if (frame) return;
-
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        updateScrollEffects();
-      });
-    };
-
-    const handleMotionChange = () => {
-      requestUpdate();
-    };
-
-    applyActiveStep(0);
-    requestUpdate();
-
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    mediaQuery.addEventListener("change", handleMotionChange);
-
-    return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      mediaQuery.removeEventListener("change", handleMotionChange);
-
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-      }
-    };
-  }, []);
-
   return (
-    <div className="relative isolate">
-      <GL hovering={hovering} />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(5,6,12,0.14),rgba(5,6,12,0.36)_24%,rgba(5,6,12,0.58)_100%)]" />
+    <div className="relative isolate overflow-hidden">
+      <HeroEffects />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,25,72,0.14),rgba(8,25,72,0.4)_24%,rgba(8,25,72,0.74)_100%)]" />
 
       <section
         id="top"
-        ref={heroRef}
-        className="relative flex min-h-svh scroll-mt-32 items-end overflow-hidden pt-32"
+        data-hero-section
+        className="relative flex min-h-svh scroll-mt-32 items-center overflow-hidden pt-28"
       >
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_50%_0%,rgba(255,139,90,0.34),transparent_58%)]" />
-        <div className="pointer-events-none absolute left-1/2 top-20 h-[28rem] w-[72rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(120,211,255,0.2),transparent_56%)] blur-3xl" />
-        <div className="pointer-events-none absolute inset-x-[8%] top-24 h-[34rem] rounded-[999px] bg-[radial-gradient(circle_at_50%_26%,rgba(5,6,12,0.88),rgba(5,6,12,0.64)_48%,rgba(5,6,12,0.18)_72%,transparent)] blur-2xl" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] bg-[radial-gradient(circle_at_50%_0%,rgba(233,238,249,0.16),transparent_58%)]" />
+        <div className="pointer-events-none absolute left-[-8rem] top-16 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(225,38,45,0.22),transparent_64%)] blur-3xl" />
+        <div className="pointer-events-none absolute right-[-8rem] top-20 h-[32rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(114,144,228,0.3),transparent_62%)] blur-3xl" />
+        <div className="pointer-events-none absolute inset-x-[8%] top-24 h-[36rem] rounded-[999px] bg-[radial-gradient(circle_at_50%_24%,rgba(8,25,72,0.76),rgba(8,25,72,0.46)_48%,transparent_76%)] blur-2xl" />
         <div
-          ref={heroGlowRef}
-          className="pointer-events-none absolute bottom-[-12rem] left-1/2 h-[24rem] w-[96rem] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_100%,rgba(255,139,90,0.62),rgba(255,139,90,0.18)_34%,transparent_70%)] blur-3xl"
+          data-hero-glow
+          className="pointer-events-none absolute bottom-[-12rem] left-1/2 h-[24rem] w-[96rem] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_100%,rgba(233,238,249,0.22),rgba(225,38,45,0.16)_34%,transparent_72%)] blur-3xl"
         />
 
-        <div className="container relative flex min-h-svh flex-col items-center justify-end pb-20 text-center">
-          <div className="pointer-events-none absolute inset-x-[12%] bottom-10 top-28 rounded-[3rem] bg-[radial-gradient(circle_at_50%_24%,rgba(8,10,18,0.72),rgba(8,10,18,0.34)_48%,transparent_74%)] blur-xl" />
-          <Pill className="relative mb-8 border-white/12 bg-black/28 text-foreground/72">
-            AI receptionist + lead systems
-          </Pill>
-          <p className="relative font-mono text-[11px] uppercase tracking-[0.32em] text-foreground/56">
-            Focused on client acquisition
-          </p>
-          <h1
-            ref={heroTitleRef}
-            className="relative mt-6 max-w-[10ch] font-sentient text-5xl leading-[0.92] tracking-[-0.08em] text-foreground [text-shadow:0_12px_44px_rgba(0,0,0,0.58)] sm:text-6xl md:text-7xl lg:text-[7.5rem]"
-            style={{ transformOrigin: "center top" }}
-          >
-            Turn missed calls into booked{" "}
-            <i className="font-light text-foreground/92">clients</i>
-          </h1>
-          <p className="relative mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/78 [text-shadow:0_6px_30px_rgba(0,0,0,0.4)] sm:text-[1.15rem]">
-            NovaLeads builds the engine behind modern service businesses:
-            high-converting landing pages, targeted lead generation, AI call
-            handling, and automated follow-ups that keep working after hours.
-          </p>
-
-          <div className="relative mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button
-              asChild
-              onMouseEnter={() => setHovering(true)}
-              onMouseLeave={() => setHovering(false)}
+        <div className="container relative grid min-h-svh items-end gap-10 pb-20 pt-14 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] lg:gap-12">
+          <div className="relative max-w-[780px] self-end">
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.12)] text-foreground/82">
+              Business growth partners
+            </Pill>
+            <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.32em] text-foreground/60">
+              Lead generation, sales, branding, strategy, and automation
+            </p>
+            <h1
+              data-hero-title
+              className="relative mt-6 max-w-[12ch] font-sentient text-5xl leading-[0.92] tracking-[-0.08em] text-foreground [text-shadow:0_14px_44px_rgba(8,25,72,0.42)] sm:text-6xl md:text-7xl lg:text-[7.15rem]"
+              style={{ transformOrigin: "left top" }}
             >
-              <Link href="#contact">Book a free strategy call</Link>
-            </Button>
-            <Button asChild variant="secondary">
-              <Link href="#process">See the system</Link>
-            </Button>
+              Out with the old.{" "}
+              <i className="font-light text-foreground/92">
+                In with a business that actually grows.
+              </i>
+            </h1>
+            <p className="mt-8 max-w-[720px] text-pretty text-base leading-8 text-foreground/80 sm:text-[1.08rem]">
+              Over the last two months, we have helped businesses sharpen their
+              message, rebuild pages, strengthen follow-up, and put smarter
+              systems behind the work. NovaLeads works best when we can show up
+              as a hands-on partner across strategy, sales, branding, and
+              practical automation.
+            </p>
+
+            <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <Button asChild>
+                <Link data-gl-trigger href="#contact">
+                  Book a free 30-minute growth audit
+                </Link>
+              </Button>
+              <Button asChild variant="secondary">
+                <Link href="#process">See how we work</Link>
+              </Button>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              {locationItems.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/14 bg-[rgba(233,238,249,0.08)] px-4 py-2 text-xs font-mono uppercase tracking-[0.2em] text-foreground/72"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <p className="mt-8 max-w-[640px] text-sm leading-7 text-foreground/60">
+              The aim is simple: clearer positioning, stronger lead flow,
+              faster response, and a business that feels easier to move
+              forward.
+            </p>
           </div>
 
-          <p className="relative mt-10 max-w-[620px] text-sm leading-7 text-foreground/58">
-            Based in South Africa and built for service businesses and SMEs
-            that care about real enquiries, faster response times, and cleaner
-            conversion systems.
-          </p>
+          <div className="relative grid gap-6 lg:pb-8">
+            <article className={panelClass}>
+              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
+                Our story and the case for change
+              </p>
+              <blockquote className="mt-6 max-w-[18ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-[2.4rem]">
+                "We kept seeing good businesses held back not by lack of
+                ambition, but by outdated processes, unclear positioning, and
+                too much manual work."
+              </blockquote>
+              <p className="mt-6 max-w-[52ch] text-base leading-8 text-foreground/76">
+                That is why the work now reaches beyond one tactic. We diagnose
+                what is slowing growth, design what fits the business, and
+                deploy the pages, campaigns, systems, and support that help it
+                move with more confidence.
+              </p>
+            </article>
+
+            <article className={panelClass}>
+              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
+                What the last two months confirmed
+              </p>
+              <h2 className="mt-5 max-w-[18ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-[2.3rem]">
+                Businesses pulling ahead are the ones responding faster,
+                communicating clearly, and using automation intelligently.
+              </h2>
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {signalItems.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[1.35rem] border border-white/14 bg-[rgba(255,255,255,0.05)] px-4 py-4"
+                  >
+                    <strong className="block font-sentient text-3xl tracking-[-0.06em] text-foreground">
+                      {item.value}
+                    </strong>
+                    <p className="mt-2 text-sm leading-6 text-foreground/68">
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section className="relative border-y border-white/10 bg-black/18 backdrop-blur-md">
-        <div className="container grid md:grid-cols-4">
-          <div className="px-0 py-6 md:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Coverage
-            </p>
-            <strong className="mt-3 block text-2xl tracking-[-0.05em] text-foreground">
-              24/7
-            </strong>
-          </div>
-          <div className="border-t border-white/10 px-0 py-6 md:border-l md:border-t-0 md:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Guarantee
-            </p>
-            <strong className="mt-3 block text-2xl tracking-[-0.05em] text-foreground">
-              10+ leads in 90 days
-            </strong>
-          </div>
-          <div className="border-t border-white/10 px-0 py-6 md:border-l md:border-t-0 md:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Clients served
-            </p>
-            <strong className="mt-3 block text-2xl tracking-[-0.05em] text-foreground">
-              10+
-            </strong>
-          </div>
-          <div className="border-t border-white/10 px-0 py-6 md:border-l md:border-t-0 md:px-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Campaigns launched
-            </p>
-            <strong className="mt-3 block text-2xl tracking-[-0.05em] text-foreground">
-              15+
-            </strong>
-          </div>
+      <section className="relative border-y border-white/12 bg-[rgba(233,238,249,0.08)] backdrop-blur-xl">
+        <div className="container grid gap-px md:grid-cols-4">
+          {capabilityItems.map((item, index) => (
+            <article key={item.title} className="px-0 py-6 md:px-6 md:py-7">
+              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/48">
+                0{index + 1}
+              </p>
+              <strong className="mt-3 block font-sentient text-2xl tracking-[-0.05em] text-foreground">
+                {item.title}
+              </strong>
+              <p className="mt-4 max-w-[28ch] text-sm leading-7 text-foreground/68">
+                {item.body}
+              </p>
+            </article>
+          ))}
         </div>
       </section>
 
       <section
         id="services"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(5,6,12,0.1),rgba(5,6,12,0.34)_18%,rgba(5,6,12,0.18)_100%)] py-28 md:py-36"
+        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.1),rgba(8,25,72,0.32)_18%,rgba(8,25,72,0.16)_100%)] py-28 md:py-36"
       >
-        <div className="container">
-          <div className="max-w-[920px]">
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
-              What NovaLeads builds
-            </Pill>
-            <h2 className="mt-8 max-w-[10ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.32)] sm:text-5xl md:text-6xl lg:text-[5.5rem]">
-              A cleaner path from attention to appointment.
-            </h2>
-            <p className="mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/72 sm:text-lg">
-              Every layer is designed to reduce friction: attract the right
-              people, answer faster, qualify automatically, and keep the best
-              leads moving toward a booking.
-            </p>
+        <div className="container grid gap-14 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
+          <div>
+            <div className="max-w-[860px]">
+              <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+                What we deliver
+              </Pill>
+              <h2 className="mt-8 max-w-[12ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5.35rem]">
+                Full-service support, built around the business in front of us.
+              </h2>
+              <p className="mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/76 sm:text-lg">
+                This is not about pushing one offer. It is about combining the
+                right pieces so growth feels more intentional, more personal,
+                and less held back by old ways of working.
+              </p>
+            </div>
+
+            <div className="mt-16 border-y border-white/12">
+              {serviceItems.map((item) => (
+                <article
+                  key={item.id}
+                  className="grid gap-4 border-b border-white/12 py-8 last:border-b-0 md:grid-cols-[110px_minmax(0,0.86fr)_minmax(0,1fr)] md:gap-10"
+                >
+                  <span className="font-sentient text-3xl tracking-[-0.06em] text-foreground/34">
+                    {item.id}
+                  </span>
+                  <h3 className="font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl">
+                    {item.title}
+                  </h3>
+                  <p className="max-w-[40ch] text-base leading-8 text-foreground/74">
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-16 border-y border-white/10">
-            {serviceItems.map((item) => (
-              <article
-                key={item.id}
-                className="grid gap-4 border-b border-white/10 py-8 last:border-b-0 md:grid-cols-[110px_minmax(0,0.8fr)_minmax(0,1fr)] md:gap-10"
-              >
-                <span className="font-sentient text-3xl tracking-[-0.06em] text-foreground/34">
-                  {item.id}
-                </span>
-                <h3 className="font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl">
-                  {item.title}
-                </h3>
-                <p className="max-w-[36ch] text-base leading-8 text-foreground/72">
-                  {item.body}
-                </p>
-              </article>
-            ))}
-          </div>
+          <aside className="grid gap-6 xl:pt-28">
+            <article className={panelClass}>
+              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
+                Tailored in practice
+              </p>
+              <div className="mt-6 grid gap-3">
+                {principleItems.map((item, index) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-4 rounded-[1.2rem] border border-white/12 bg-[rgba(255,255,255,0.05)] px-4 py-4"
+                  >
+                    <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
+                      0{index + 1}
+                    </span>
+                    <p className="text-sm leading-7 text-foreground/74">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className={panelClass}>
+              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
+                How we tend to show up best
+              </p>
+              <h3 className="mt-5 max-w-[14ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground">
+                No templates. No one-size-fits-all package. Built around you.
+              </h3>
+              <p className="mt-5 text-base leading-8 text-foreground/74">
+                The recent work has made that even clearer. Businesses respond
+                well when the plan fits their actual market, team capacity, and
+                stage of growth, not an agency playbook copied from somewhere
+                else.
+              </p>
+            </article>
+          </aside>
         </div>
       </section>
 
       <section
         id="process"
-        ref={processRef}
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(5,6,12,0.2),rgba(5,6,12,0.42)_24%,rgba(5,6,12,0.16)_100%)] py-28 md:py-36"
+        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.18),rgba(8,25,72,0.4)_24%,rgba(8,25,72,0.14)_100%)] py-28 md:py-36"
       >
         <div className="container grid gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
-              How the system moves
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+              How we work
             </Pill>
-            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.3)] sm:text-5xl md:text-6xl">
-              One connected journey from ad click to booked consult.
+            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl">
+              Diagnose, design, and deploy with clarity.
             </h2>
-            <p className="mt-8 max-w-[620px] text-base leading-8 text-foreground/72 sm:text-lg">
-              The process is simple on purpose. Scroll through the sequence and
-              the live readout updates with each stage of the NovaLeads system.
+            <p className="mt-8 max-w-[620px] text-base leading-8 text-foreground/76 sm:text-lg">
+              The method is simple on purpose. We learn the business properly,
+              shape the right response, and execute with you so the work lands
+              in reality instead of staying in a slide deck.
             </p>
 
-            <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/12 bg-black/38 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.34)] backdrop-blur-md md:p-7">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(104,215,255,0.18),transparent_24%),radial-gradient(circle_at_50%_82%,rgba(255,139,90,0.18),transparent_26%)]" />
+            <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/16 bg-[rgba(233,238,249,0.12)] p-5 shadow-[0_24px_80px_rgba(8,25,72,0.24)] backdrop-blur-xl md:p-7">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(233,238,249,0.18),transparent_24%),radial-gradient(circle_at_50%_82%,rgba(225,38,45,0.18),transparent_28%)]" />
               <div className="relative min-h-[420px]">
-                <div className="absolute left-1/2 top-[15%] h-[70%] w-px -translate-x-1/2 bg-white/10" />
+                <div className="absolute left-1/2 top-[15%] h-[70%] w-px -translate-x-1/2 bg-white/14" />
                 <div
-                  ref={processLineRef}
-                  className="absolute left-1/2 top-[15%] w-px -translate-x-1/2 bg-gradient-to-b from-[#66d8ff] to-[#ff8b5a]"
+                  data-process-line
+                  className="absolute left-1/2 top-[15%] w-px -translate-x-1/2 bg-gradient-to-b from-[#e9eef9] via-[#7f96df] to-[#e1262d]"
                   style={{ height: "0%" }}
                 />
                 <div
-                  ref={processDotRef}
-                  className="absolute left-1/2 top-[15%] size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_36px_rgba(255,139,90,0.55)]"
+                  data-process-dot
+                  className="absolute left-1/2 top-[15%] size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f7f9ff] shadow-[0_0_36px_rgba(225,38,45,0.45)]"
                 />
-                <div className="absolute inset-x-[14%] top-[13%] aspect-square rounded-full border border-white/10" />
-                <div className="absolute inset-x-[24%] top-[23%] aspect-square rounded-full border border-white/10" />
-                <div className="absolute inset-x-[34%] top-[33%] aspect-square rounded-full border border-white/10" />
+                <div className="absolute inset-x-[14%] top-[13%] aspect-square rounded-full border border-white/12" />
+                <div className="absolute inset-x-[24%] top-[23%] aspect-square rounded-full border border-white/12" />
+                <div className="absolute inset-x-[34%] top-[33%] aspect-square rounded-full border border-white/12" />
 
                 <div className="absolute inset-x-0 bottom-0">
-                  <div className="rounded-[1.75rem] border border-white/12 bg-black/58 p-5 backdrop-blur-xl md:p-6">
+                  <div className="rounded-[1.75rem] border border-white/16 bg-[rgba(8,25,72,0.42)] p-5 backdrop-blur-xl md:p-6">
                     <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/52">
-                      Live sequence
+                      NovaLeads method
                     </p>
                     <span
-                      ref={signalStepRef}
-                      className="mt-4 block font-sentient text-6xl tracking-[-0.08em] text-foreground/32"
+                      data-process-signal-step
+                      className="mt-4 block font-sentient text-6xl tracking-[-0.08em] text-foreground/30"
                     >
                       01
                     </span>
                     <h3
-                      ref={signalTitleRef}
+                      data-process-signal-title
                       className="mt-2 font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl"
                     >
                       {processItems[0].title}
                     </h3>
                     <p
-                      ref={signalBodyRef}
+                      data-process-signal-body
                       className="mt-4 max-w-[34ch] text-sm leading-7 text-foreground/72 sm:text-base"
                     >
                       {processItems[0].body}
@@ -433,15 +427,16 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="border-y border-white/10">
+          <div className="border-y border-white/12">
             {processItems.map((item, index) => (
               <article
                 key={item.id}
-                ref={(node) => {
-                  stepRefs.current[index] = node;
-                }}
+                data-process-step
+                data-step-id={item.id}
+                data-step-title={item.title}
+                data-step-body={item.body}
                 data-active={index === 0 ? "true" : "false"}
-                className="grid gap-3 border-b border-white/10 py-8 opacity-60 transition-all duration-300 data-[active=true]:translate-x-2 data-[active=true]:opacity-100 last:border-b-0 md:grid-cols-[110px_1fr]"
+                className="grid gap-3 border-b border-white/12 py-8 opacity-60 transition-all duration-300 data-[active=true]:translate-x-2 data-[active=true]:opacity-100 last:border-b-0 md:grid-cols-[110px_1fr]"
               >
                 <span className="font-sentient text-3xl tracking-[-0.06em] text-foreground/34">
                   {item.id}
@@ -450,7 +445,7 @@ export function Hero() {
                   <h3 className="font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl">
                     {item.title}
                   </h3>
-                  <p className="mt-4 max-w-[40ch] text-base leading-8 text-foreground/72">
+                  <p className="mt-4 max-w-[40ch] text-base leading-8 text-foreground/74">
                     {item.body}
                   </p>
                 </div>
@@ -462,71 +457,79 @@ export function Hero() {
 
       <section
         id="results"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(5,6,12,0.18),rgba(5,6,12,0.34)_24%,rgba(5,6,12,0.16)_100%)] py-28 md:py-36"
+        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.16),rgba(8,25,72,0.3)_24%,rgba(8,25,72,0.12)_100%)] py-28 md:py-36"
       >
         <div className="container">
-          <div className="max-w-[860px]">
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
-              Outcomes over noise
+          <div className="max-w-[880px]">
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+              What better looks like
             </Pill>
-            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.3)] sm:text-5xl md:text-6xl lg:text-[5rem]">
-              Built for measurable lead flow, booked appointments, and less
-              admin chaos.
+            <h2 className="mt-8 max-w-[12ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5rem]">
+              Less friction, stronger follow-through, and growth that feels
+              more grounded.
             </h2>
           </div>
 
-          <div className="mt-16 grid gap-10 border-y border-white/10 py-10 md:grid-cols-3">
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
             {resultItems.map((item) => (
-              <article key={item.label}>
-                <strong className="block font-sentient text-5xl tracking-[-0.08em] text-foreground sm:text-6xl">
-                  {item.value}
-                </strong>
-                <p className="mt-4 max-w-[18ch] text-base leading-8 text-foreground/72">
-                  {item.label}
+              <article key={item.title} className={panelClass}>
+                <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+                <h3 className="font-sentient text-3xl tracking-[-0.06em] text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-5 max-w-[32ch] text-base leading-8 text-foreground/74">
+                  {item.body}
                 </p>
               </article>
             ))}
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            {marketItems.map((item) => (
-              <span
-                key={item}
-                className="rounded-full border border-white/12 bg-black/24 px-4 py-2 text-sm text-foreground/78"
-              >
-                {item}
-              </span>
-            ))}
+          <div className="mt-12">
+            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
+              Industries we have been closest to
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {industryItems.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/14 bg-[rgba(233,238,249,0.08)] px-4 py-2 text-sm text-foreground/76"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       <section className="relative py-28 md:py-36">
-        <div className="container grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20">
+        <div className="container grid gap-14 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:gap-20">
           <div>
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
-              What clients feel
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+              Our commitment
             </Pill>
-            <blockquote className="mt-8 max-w-[10ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.32)] sm:text-5xl md:text-6xl lg:text-[5.25rem]">
-              "We finally started getting real leads instead of just likes."
+            <blockquote className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5.15rem]">
+              "We do not believe in one-size-fits-all. Every client gets a
+              partner who shows up fully."
             </blockquote>
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Service-based business
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-primary">
+              Relationships first. Results always.
             </p>
           </div>
 
-          <div className="lg:pt-28">
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
-              Why it works
+          <div className="lg:pt-24">
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+              Why it feels more personal
             </Pill>
             <h3 className="mt-8 max-w-[13ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-4xl">
-              NovaLeads feels closer to a revenue system than a typical
-              marketing retainer.
+              The recent work has been about getting closer to the real
+              business, not hiding behind generic marketing language.
             </h3>
-            <p className="mt-6 max-w-[34ch] text-base leading-8 text-foreground/72">
-              The whole stack is pointed at one thing: attract better-fit
-              demand, respond faster, and help your business convert more of
-              the leads that already want help.
+            <p className="mt-6 max-w-[40ch] text-base leading-8 text-foreground/74">
+              Once we started building from what clients were actually dealing
+              with day to day, the work became more honest and more useful. The
+              best results came from clearer offers, better systems, and
+              genuine partnership rather than more noise.
             </p>
           </div>
         </div>
@@ -534,29 +537,29 @@ export function Hero() {
 
       <section
         id="faq"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(5,6,12,0.12),rgba(5,6,12,0.3)_20%,rgba(5,6,12,0.18)_100%)] py-28 md:py-36"
+        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.12),rgba(8,25,72,0.28)_20%,rgba(8,25,72,0.16)_100%)] py-28 md:py-36"
       >
         <div className="container grid gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <Pill className="border-white/12 bg-black/24 text-foreground/72">
+            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
               Frequently asked
             </Pill>
-            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.3)] sm:text-5xl md:text-6xl">
+            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl">
               Clear answers, without the agency fog.
             </h2>
           </div>
 
-          <div className="border-y border-white/10">
+          <div className="border-y border-white/12">
             {faqItems.map((item, index) => (
               <details
                 key={item.question}
-                className="border-b border-white/10 py-6 last:border-b-0"
+                className="border-b border-white/12 py-6 last:border-b-0"
                 open={index === 0}
               >
                 <summary className="cursor-pointer list-none pr-8 font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-[2rem] [&::-webkit-details-marker]:hidden">
                   {item.question}
                 </summary>
-                <p className="mt-4 max-w-[38ch] text-base leading-8 text-foreground/72">
+                <p className="mt-4 max-w-[40ch] text-base leading-8 text-foreground/74">
                   {item.answer}
                 </p>
               </details>
@@ -567,28 +570,26 @@ export function Hero() {
 
       <section
         id="contact"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(5,6,12,0.16),rgba(5,6,12,0.42)_24%,rgba(5,6,12,0.2)_100%)] pb-10 pt-28 md:pb-16 md:pt-36"
+        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.14),rgba(8,25,72,0.38)_24%,rgba(8,25,72,0.18)_100%)] pb-10 pt-28 md:pb-16 md:pt-36"
       >
-        <div className="container border-t border-white/10 pt-16 text-center">
-          <Pill className="border-white/12 bg-black/24 text-foreground/72">
-            Ready to scale
+        <div className="container border-t border-white/12 pt-16 text-center">
+          <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
+            Next step
           </Pill>
-          <h2 className="mx-auto mt-8 max-w-[10ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(0,0,0,0.32)] sm:text-5xl md:text-6xl lg:text-[5rem]">
-            Build a lead system that works like staff, not guesswork.
+          <h2 className="mx-auto mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5rem]">
+            Book a free 30-minute growth audit.
           </h2>
-          <p className="mx-auto mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/74 sm:text-lg">
-            If your business depends on enquiries, response speed, and
-            consistent bookings, NovaLeads can help you create a calmer,
-            stronger acquisition engine.
+          <p className="mx-auto mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/76 sm:text-lg">
+            We will identify the clearest growth opportunity your business may
+            be leaving on the table, and the kind of strategy, support, or
+            systems that could help you capture it. No pressure. Just clarity.
           </p>
 
           <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button
-              asChild
-              onMouseEnter={() => setHovering(true)}
-              onMouseLeave={() => setHovering(false)}
-            >
-              <Link href="#top">Request a strategy call</Link>
+            <Button asChild>
+              <Link data-gl-trigger href="#top">
+                Request a growth audit
+              </Link>
             </Button>
             <Button asChild variant="secondary">
               <Link href="#services">Review services</Link>
@@ -598,12 +599,18 @@ export function Hero() {
       </section>
 
       <footer className="relative pb-10">
-        <div className="container flex flex-col gap-5 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
-          <div className="inline-flex items-center gap-3">
-            <span className="size-2.5 rounded-full bg-primary shadow-glow shadow-primary/50" />
-            <span className="font-sentient text-2xl tracking-[-0.05em]">
-              NovaLeads
-            </span>
+        <div className="container flex flex-col gap-5 border-t border-white/12 pt-8 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="inline-flex items-center gap-3">
+              <span className="size-2.5 rounded-full bg-primary shadow-glow shadow-primary/60" />
+              <span className="font-sentient text-2xl tracking-[-0.05em]">
+                NovaLeads
+              </span>
+            </div>
+            <p className="mt-3 text-sm text-foreground/58">
+              Based in South Africa, partnering with businesses locally and
+              beyond.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-3 text-sm text-foreground/64">

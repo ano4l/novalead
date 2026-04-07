@@ -6,7 +6,7 @@ export const Header = () => {
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full pt-5 md:pt-8">
-      <header className="container flex items-center justify-between rounded-full border border-white/10 bg-black/34 px-5 py-3 backdrop-blur-md md:px-6">
+      <header className="container flex items-center justify-between rounded-full border border-white/14 bg-[rgba(8,25,72,0.6)] px-5 py-3 shadow-[0_20px_60px_rgba(8,25,72,0.18)] backdrop-blur-xl md:px-6">
         <Link href="/" className="inline-flex items-center gap-3">
           <span className="size-2.5 rounded-full bg-primary shadow-glow shadow-primary/50" />
           <span className="font-sentient text-xl md:text-2xl tracking-[-0.05em]">
@@ -25,10 +25,10 @@ export const Header = () => {
           ))}
         </nav>
         <Link
-          className="uppercase max-lg:hidden inline-flex h-12 items-center rounded-full bg-white px-5 text-[11px] tracking-[0.24em] text-black transition-transform duration-200 ease-out hover:-translate-y-0.5"
+          className="uppercase max-lg:hidden inline-flex h-12 items-center rounded-full bg-primary px-5 text-[11px] tracking-[0.24em] text-white transition-transform duration-200 ease-out hover:-translate-y-0.5"
           href="/#contact"
         >
-          Book Call
+          Book Audit
         </Link>
         <MobileMenu />
       </header>

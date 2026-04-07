@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NovaLeads | AI Receptionists For Real Growth",
+  title: "NovaLeads | Growth Partner for Businesses Ready to Move Forward",
   description:
-    "NovaLeads builds AI receptionists, lead generation campaigns, websites, and automations that help service businesses book more clients.",
+    "NovaLeads supports businesses with lead generation, sales support, branding, websites, strategy, and practical automation built around real growth.",
 };
 
 export default function RootLayout({

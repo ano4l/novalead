@@ -42,7 +42,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
       <Dialog.Portal>
         <div
           data-overlay="true"
-          className="fixed z-30 inset-0 bg-black/50 backdrop-blur-sm"
+          className="fixed z-30 inset-0 bg-[rgba(8,25,72,0.58)] backdrop-blur-sm"
         />
 
         <Dialog.Content
@@ -76,7 +76,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
                 onClick={handleLinkClick}
                 className="inline-block text-xl font-mono uppercase text-primary transition-colors ease-out duration-150 hover:text-primary/80 py-2"
               >
-                Book Call
+                Book Audit
               </Link>
             </div>
           </nav>

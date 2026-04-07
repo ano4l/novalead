@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState, useRef } from "react";
 import { createPortal, useFrame } from "@react-three/fiber";
 import { useFBO } from "@react-three/drei";
 
@@ -38,11 +38,9 @@ export function Particles({
   manualTime?: number;
   introspect?: boolean;
 }) {
-  // Reveal animation state
   const revealStartTime = useRef<number | null>(null);
-  const [isRevealing, setIsRevealing] = useState(true);
   const revealDuration = 3.5; // seconds
-  // Create simulation material with scale parameter
+
   const simulationMaterial = useMemo(() => {
     return new SimulationMaterial(planeScale);
   }, [planeScale]);
@@ -114,10 +112,6 @@ export function Particles({
     // Map progress to reveal factor (0 = fully hidden, higher values = more revealed)
     // We want to start from center (0) and expand outward (higher values)
     const revealFactor = easedProgress * 4.0; // Doubled the radius for larger coverage
-
-    if (revealProgress >= 1.0 && isRevealing) {
-      setIsRevealing(false);
-    }
 
     dofPointsMaterial.uniforms.uTime.value = currentTime;
 

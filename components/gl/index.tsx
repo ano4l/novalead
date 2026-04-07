@@ -3,25 +3,33 @@ import { Canvas } from "@react-three/fiber";
 import { Particles } from "./particles";
 import { VignetteShader } from "./shaders/vignetteShader";
 
-export const GL = ({ hovering }: { hovering: boolean }) => {
+type GLProps = {
+  hovering: boolean;
+  quality?: "medium" | "high";
+};
+
+export const GL = ({ hovering, quality = "medium" }: GLProps) => {
+  const isHighQuality = quality === "high";
   const speed = 1.0;
   const focus = 3.8;
   const aperture = 1.62;
-  const size = 512;
+  const size = isHighQuality ? 384 : 320;
   const noiseScale = 0.48;
-  const noiseIntensity = 0.34;
+  const noiseIntensity = isHighQuality ? 0.34 : 0.28;
   const timeScale = 0.84;
-  const pointSize = 7.4;
-  const opacity = 0.44;
+  const pointSize = isHighQuality ? 7.1 : 6.2;
+  const opacity = isHighQuality ? 0.52 : 0.44;
   const planeScale = 10.0;
-  const vignetteDarkness = 1.75;
-  const vignetteOffset = 0.52;
+  const vignetteDarkness = 1.52;
+  const vignetteOffset = 0.48;
   const useManualTime = false;
   const manualTime = 0;
 
   return (
     <div id="webgl">
       <Canvas
+        dpr={isHighQuality ? [1, 1.4] : [1, 1.15]}
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         camera={{
           position: [
             1.2629783123314589, 2.664606471394044, -1.8178993743288914,
@@ -31,7 +39,7 @@ export const GL = ({ hovering }: { hovering: boolean }) => {
           far: 300,
         }}
       >
-        <color attach="background" args={["#000"]} />
+        <color attach="background" args={["#081947"]} />
         <Particles
           speed={speed}
           aperture={aperture}
