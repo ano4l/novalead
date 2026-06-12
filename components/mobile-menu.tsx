@@ -14,10 +14,11 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { name: "Services", href: "#services" },
-    { name: "Process", href: "#process" },
-    { name: "Results", href: "#results" },
-    { name: "FAQ", href: "#faq" },
+    { name: "Services", href: "/services/lead-generation" },
+    { name: "Products", href: "/products" },
+    { name: "Work", href: "/work" },
+    { name: "Process", href: "/process" },
+    { name: "Testimonials", href: "/testimonials" },
   ];
 
   const handleLinkClick = () => {
@@ -29,7 +30,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
       <Dialog.Trigger asChild>
         <button
           className={cn(
-            "group lg:hidden p-2 text-foreground transition-colors",
+            "group p-2 text-[#061327] transition-colors lg:hidden",
             className
           )}
           aria-label="Open menu"
@@ -42,7 +43,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
       <Dialog.Portal>
         <div
           data-overlay="true"
-          className="fixed z-30 inset-0 bg-[rgba(8,25,72,0.58)] backdrop-blur-sm"
+          className="fixed inset-0 z-30 bg-white/86 backdrop-blur-sm"
         />
 
         <Dialog.Content
@@ -64,7 +65,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
                 key={item.name}
                 href={item.href}
                 onClick={handleLinkClick}
-                className="text-xl font-mono uppercase text-foreground/60 transition-colors ease-out duration-150 hover:text-foreground/100 py-2"
+              className="py-2 font-sentient text-4xl tracking-[-0.06em] text-[#061327] transition-colors duration-150 ease-out hover:text-primary"
               >
                 {item.name}
               </Link>
@@ -72,11 +73,11 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
 
             <div className="mt-6">
               <Link
-                href="/#contact"
+                href="/contact"
                 onClick={handleLinkClick}
-                className="inline-block text-xl font-mono uppercase text-primary transition-colors ease-out duration-150 hover:text-primary/80 py-2"
+                className="inline-block font-mono text-xl uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80"
               >
-                Book Audit
+                Contact
               </Link>
             </div>
           </nav>

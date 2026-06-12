@@ -1,34 +1,41 @@
 import Link from "next/link";
+import { Logo } from "./logo";
 import { MobileMenu } from "./mobile-menu";
 
 export const Header = () => {
-  const items = ["Services", "Process", "Results", "FAQ"];
+  const items = [
+    { name: "Services", href: "/services/lead-generation" },
+    { name: "Products", href: "/products" },
+    { name: "Work", href: "/work" },
+    { name: "Process", href: "/process" },
+    { name: "Testimonials", href: "/testimonials" },
+  ];
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full pt-5 md:pt-8">
-      <header className="container flex items-center justify-between rounded-full border border-white/14 bg-[rgba(8,25,72,0.6)] px-5 py-3 shadow-[0_20px_60px_rgba(8,25,72,0.18)] backdrop-blur-xl md:px-6">
-        <Link href="/" className="inline-flex items-center gap-3">
-          <span className="size-2.5 rounded-full bg-primary shadow-glow shadow-primary/50" />
-          <span className="font-sentient text-xl md:text-2xl tracking-[-0.05em]">
+      <header className="container flex items-center justify-between rounded-full border border-[#061327]/10 bg-white/72 py-3 shadow-[0_18px_60px_rgba(0,32,92,0.09)] backdrop-blur-xl">
+        <Link href="/" className="inline-flex items-center">
+          <Logo className="h-10 w-10 rounded-lg p-0 md:h-11 md:w-11" />
+          <span className="ml-3 font-sentient text-3xl tracking-[-0.06em] text-[#061327] md:text-4xl">
             NovaLeads
           </span>
         </Link>
-        <nav className="flex max-lg:hidden absolute left-1/2 -translate-x-1/2 items-center justify-center gap-x-10">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center gap-x-10 lg:flex">
           {items.map((item) => (
             <Link
-              className="uppercase inline-block font-mono text-foreground/60 hover:text-foreground/100 duration-150 transition-colors ease-out"
-              href={`#${item.toLowerCase()}`}
-              key={item}
+              className="inline-block font-mono text-sm uppercase text-[#061327]/58 transition-colors duration-150 ease-out hover:text-[#061327]"
+              href={item.href}
+              key={item.name}
             >
-              {item}
+              {item.name}
             </Link>
           ))}
         </nav>
         <Link
-          className="uppercase max-lg:hidden inline-flex h-12 items-center rounded-full bg-primary px-5 text-[11px] tracking-[0.24em] text-white transition-transform duration-200 ease-out hover:-translate-y-0.5"
-          href="/#contact"
+          className="hidden font-mono text-sm uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80 lg:inline-flex"
+          href="/contact"
         >
-          Book Audit
+          Contact
         </Link>
         <MobileMenu />
       </header>

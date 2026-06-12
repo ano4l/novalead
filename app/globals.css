@@ -1,27 +1,31 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Sentient';
-  src: url('/Sentient-Extralight.woff') format('woff');
+  font-family: "Sentient";
+  src: url("/Sentient-Extralight.woff") format("woff");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Sentient';
-  src: url('/Sentient-LightItalic.woff') format('woff');
+  font-family: "Sentient";
+  src: url("/Sentient-LightItalic.woff") format("woff");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 
 :root {
-  --background: #081947;
-  --foreground: #f6f8ff;
+  --background: #ffffff;
+  --foreground: #061327;
   --primary: #e1262d;
   --primary-foreground: #ffffff;
-  --border: rgba(233, 238, 249, 0.18);
+  --brand-red: #e1262d;
+  --brand-blue: #0057b8;
+  --brand-blue-bright: #0b7cff;
+  --brand-navy: #020816;
+  --border: rgba(255, 255, 255, 0.18);
 }
 
 @utility container {
@@ -43,42 +47,551 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-border: var(--border);
-
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-sentient: 'Sentient', sans-serif;
-
+  --font-sentient: "Sentient", sans-serif;
   --shadow-glow: 0 0 8px 2px var(--tw-shadow-color);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background:
-    radial-gradient(circle at 18% 16%, rgba(233, 238, 249, 0.16), transparent 20%),
-    radial-gradient(circle at 82% 12%, rgba(225, 38, 45, 0.16), transparent 22%),
-    radial-gradient(circle at 50% 100%, rgba(122, 147, 223, 0.14), transparent 30%),
-    linear-gradient(180deg, #1d3f9e 0%, #12327f 18%, #0a225f 56%, #081947 100%);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 48% 0%, rgba(0, 87, 184, 0.12), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(225, 38, 45, 0.1), transparent 26%),
+    radial-gradient(circle at 18% 86%, rgba(11, 124, 255, 0.08), transparent 24%),
+    #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
 }
 
 body::selection {
-  background: rgba(225, 38, 45, 0.32);
+  background: rgba(225, 38, 45, 0.42);
   color: #ffffff;
 }
 
 #webgl {
-  top: 0;
-  left: 0;
   position: fixed;
+  inset: 0;
+  z-index: 0;
   height: 100svh;
   width: 100%;
   pointer-events: none;
-  opacity: 0.96;
 }
 
 #webgl canvas {
-  width: 100%;
   height: 100%;
+  width: 100%;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.nova-card {
+  border: 1px solid rgba(6, 19, 39, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 90px rgba(0, 32, 92, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.hero-signal {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(225, 38, 45, 0.22), transparent 26%),
+    linear-gradient(90deg, transparent, rgba(0, 87, 184, 0.34), rgba(225, 38, 45, 0.28), transparent);
+  filter: blur(18px);
+}
+
+.fluid-cta-gradient {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.32), transparent 22%),
+    radial-gradient(circle at 74% 20%, rgba(11, 124, 255, 0.82), transparent 25%),
+    radial-gradient(circle at 28% 82%, rgba(225, 38, 45, 0.82), transparent 30%),
+    radial-gradient(circle at 82% 76%, rgba(0, 32, 92, 0.94), transparent 34%),
+    linear-gradient(135deg, #e1262d 0%, #0057b8 48%, #020816 100%);
+}
+
+.fluid-cta-gradient::before,
+.fluid-cta-gradient::after {
+  content: "";
+  position: absolute;
+  inset: -24%;
+  will-change: transform, opacity;
+}
+
+.fluid-cta-gradient::before {
+  background:
+    radial-gradient(circle at 35% 45%, rgba(255, 255, 255, 0.38), transparent 18%),
+    radial-gradient(circle at 58% 42%, rgba(11, 124, 255, 0.46), transparent 24%),
+    radial-gradient(circle at 72% 62%, rgba(225, 38, 45, 0.52), transparent 30%);
+  mix-blend-mode: screen;
+  opacity: 0.74;
+  animation: cta-drift 10s ease-in-out infinite alternate;
+}
+
+.fluid-cta-gradient::after {
+  background:
+    linear-gradient(120deg, transparent 18%, rgba(255, 255, 255, 0.18), transparent 42%),
+    radial-gradient(circle at 62% 34%, rgba(11, 124, 255, 0.36), transparent 28%);
+  opacity: 0.56;
+  animation: cta-sweep 12s ease-in-out infinite alternate;
+}
+
+.growth-line {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: growth-draw 6.5s ease-in-out infinite;
+}
+
+.hero-trendline {
+  filter: drop-shadow(0 0 24px rgba(0, 87, 184, 0.5)) drop-shadow(0 0 34px rgba(225, 38, 45, 0.34));
+}
+
+.trendline-echo {
+  opacity: 0;
+  transform-origin: center;
+  animation: trendline-echo-flow 7.2s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.trendline-echo-two {
+  animation-delay: 0.5s;
+}
+
+.trendline-draw {
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: trendline-draw 7.2s cubic-bezier(0.7, 0, 0.2, 1) infinite;
+}
+
+.trendline-comet {
+  stroke-dasharray: 78 1500;
+  stroke-dashoffset: 1510;
+  opacity: 0;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.72));
+  animation: trendline-comet 7.2s cubic-bezier(0.64, 0, 0.2, 1) infinite;
+}
+
+.trendline-node {
+  transform-origin: center;
+  animation: trendline-node 7.2s ease-in-out infinite;
+}
+
+.trendline-node-halo {
+  opacity: 0;
+  transform-origin: center;
+  animation: trendline-node-halo 7.2s ease-in-out infinite;
+}
+
+.story-card {
+  transform: translateY(28px);
+  opacity: 0.72;
+  transition: transform 0.55s ease, opacity 0.55s ease, border-color 0.55s ease;
+}
+
+.story-visual {
+  position: relative;
+  min-height: 210px;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(6, 19, 39, 0.12);
+  background:
+    radial-gradient(circle at 24% 24%, rgba(0, 87, 184, 0.18), transparent 32%),
+    radial-gradient(circle at 76% 66%, rgba(225, 38, 45, 0.14), transparent 34%),
+    rgba(255, 255, 255, 0.72);
+}
+
+.story-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(6, 19, 39, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 19, 39, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle, black, transparent 78%);
+}
+
+.growth-bar {
+  transform-origin: bottom;
+  animation: bar-rise 3.2s ease-in-out infinite alternate;
+}
+
+.flow-node {
+  animation: node-pulse 2.8s ease-in-out infinite;
+}
+
+.flow-node:nth-child(2) {
+  animation-delay: 0.24s;
+}
+
+.flow-node:nth-child(3) {
+  animation-delay: 0.48s;
+}
+
+.flow-node:nth-child(4) {
+  animation-delay: 0.72s;
+}
+
+.product-panel {
+  min-height: 300px;
+}
+
+.product-panel::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(circle at 24% 32%, rgba(0, 87, 184, 0.18), transparent 26%),
+    radial-gradient(circle at 72% 60%, rgba(225, 38, 45, 0.16), transparent 30%);
+  animation: product-panel-drift 11s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.powered-nova-orbit::before,
+.powered-nova-orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.powered-nova-orbit::before {
+  inset: -28%;
+  background:
+    radial-gradient(circle at 30% 38%, rgba(0, 87, 184, 0.18), transparent 28%),
+    radial-gradient(circle at 74% 64%, rgba(225, 38, 45, 0.18), transparent 32%);
+  animation: product-panel-drift 12s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.powered-nova-orbit::after {
+  inset: 18%;
+  border: 1px solid rgba(0, 87, 184, 0.18);
+  box-shadow:
+    0 0 0 42px rgba(0, 87, 184, 0.035),
+    0 0 0 88px rgba(225, 38, 45, 0.035);
+  animation: nova-orbit-pulse 5.4s ease-in-out infinite;
+}
+
+.product-growth-line {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: product-growth-draw 5.5s ease-in-out infinite;
+}
+
+.product-story-card {
+  transform: translateY(30px);
+  opacity: 0.72;
+  transition: transform 0.55s ease, opacity 0.55s ease, border-color 0.55s ease;
+}
+
+.product-bar {
+  transform-origin: bottom;
+  animation: product-bar-rise 3.4s ease-in-out infinite alternate;
+  box-shadow: 0 0 24px rgba(0, 87, 184, 0.2);
+}
+
+@keyframes growth-draw {
+  0%,
+  14% {
+    stroke-dashoffset: 1200;
+    opacity: 0.16;
+  }
+
+  50%,
+  74% {
+    stroke-dashoffset: 0;
+    opacity: 0.9;
+  }
+
+  100% {
+    stroke-dashoffset: -1200;
+    opacity: 0.16;
+  }
+}
+
+@keyframes trendline-draw {
+  0%,
+  10% {
+    stroke-dashoffset: 1500;
+    opacity: 0.18;
+  }
+
+  48%,
+  78% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: -1500;
+    opacity: 0.2;
+  }
+}
+
+@keyframes trendline-echo-flow {
+  0%,
+  12% {
+    opacity: 0;
+    transform: translate3d(-1.4%, 1.2%, 0) scale(0.99);
+  }
+
+  36%,
+  76% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(1.6%, -1%, 0) scale(1.015);
+  }
+}
+
+@keyframes trendline-comet {
+  0%,
+  18% {
+    stroke-dashoffset: 1510;
+    opacity: 0;
+  }
+
+  31%,
+  66% {
+    opacity: 0.95;
+  }
+
+  86%,
+  100% {
+    stroke-dashoffset: -90;
+    opacity: 0;
+  }
+}
+
+@keyframes trendline-node {
+  0%,
+  20% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  38%,
+  76% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+}
+
+@keyframes trendline-node-halo {
+  0%,
+  24% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  42%,
+  74% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes bar-rise {
+  from {
+    transform: scaleY(0.56);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes product-panel-drift {
+  from {
+    transform: translate3d(-3%, -2%, 0) rotate(0deg) scale(1.02);
+  }
+
+  to {
+    transform: translate3d(4%, 2%, 0) rotate(6deg) scale(1.06);
+  }
+}
+
+@keyframes nova-orbit-pulse {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes product-growth-draw {
+  0%,
+  16% {
+    stroke-dashoffset: 900;
+    opacity: 0.2;
+  }
+
+  52%,
+  76% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: -900;
+    opacity: 0.22;
+  }
+}
+
+@keyframes product-bar-rise {
+  from {
+    transform: scaleY(0.54);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .story-card {
+    animation: story-card-reveal both ease-out;
+    animation-timeline: view();
+    animation-range: entry 15% cover 38%;
+  }
+
+  .story-visual {
+    animation: story-visual-focus both ease-out;
+    animation-timeline: view();
+    animation-range: entry 10% cover 45%;
+  }
+
+  .product-story-card {
+    animation: product-card-reveal both ease-out;
+    animation-timeline: view();
+    animation-range: entry 12% cover 42%;
+  }
+}
+
+@keyframes story-card-reveal {
+  from {
+    opacity: 0.42;
+    transform: translateY(44px) scale(0.985);
+    border-color: rgba(6, 19, 39, 0.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    border-color: rgba(225, 38, 45, 0.34);
+  }
+}
+
+@keyframes story-visual-focus {
+  from {
+    transform: scale(0.96);
+    opacity: 0.64;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes product-card-reveal {
+  from {
+    opacity: 0.42;
+    transform: translateY(48px) scale(0.982);
+    border-color: rgba(6, 19, 39, 0.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    border-color: rgba(0, 87, 184, 0.28);
+  }
+}
+
+@keyframes cta-drift {
+  from {
+    transform: translate3d(-4%, -3%, 0) rotate(0deg) scale(1.02);
+  }
+
+  to {
+    transform: translate3d(4%, 3%, 0) rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes cta-sweep {
+  from {
+    transform: translate3d(-7%, 5%, 0) rotate(-6deg) scale(1.04);
+  }
+
+  to {
+    transform: translate3d(8%, -4%, 0) rotate(5deg) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fluid-cta-gradient::before,
+  .fluid-cta-gradient::after,
+  .growth-line,
+  .trendline-echo,
+  .trendline-draw,
+  .trendline-comet,
+  .trendline-node,
+  .trendline-node-halo,
+  .growth-bar,
+  .flow-node,
+  .story-card,
+  .story-visual,
+  .product-panel::before,
+  .powered-nova-orbit::before,
+  .powered-nova-orbit::after,
+  .product-growth-line,
+  .product-story-card,
+  .product-bar {
+    animation: none;
+  }
 }

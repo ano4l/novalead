@@ -10,18 +10,18 @@ type GLProps = {
 
 export const GL = ({ hovering, quality = "medium" }: GLProps) => {
   const isHighQuality = quality === "high";
-  const speed = 1.0;
-  const focus = 3.8;
-  const aperture = 1.62;
-  const size = isHighQuality ? 384 : 320;
-  const noiseScale = 0.48;
-  const noiseIntensity = isHighQuality ? 0.34 : 0.28;
-  const timeScale = 0.84;
-  const pointSize = isHighQuality ? 7.1 : 6.2;
-  const opacity = isHighQuality ? 0.52 : 0.44;
-  const planeScale = 10.0;
-  const vignetteDarkness = 1.52;
-  const vignetteOffset = 0.48;
+  const speed = hovering ? 1.38 : 1.12;
+  const focus = 3.45;
+  const aperture = 1.38;
+  const size = isHighQuality ? 448 : 384;
+  const noiseScale = 0.56;
+  const noiseIntensity = isHighQuality ? 0.48 : 0.4;
+  const timeScale = 0.96;
+  const pointSize = isHighQuality ? 8.6 : 7.5;
+  const opacity = isHighQuality ? 0.72 : 0.64;
+  const planeScale = 11.6;
+  const vignetteDarkness = 1.28;
+  const vignetteOffset = 0.36;
   const useManualTime = false;
   const manualTime = 0;
 
@@ -39,7 +39,6 @@ export const GL = ({ hovering, quality = "medium" }: GLProps) => {
           far: 300,
         }}
       >
-        <color attach="background" args={["#081947"]} />
         <Particles
           speed={speed}
           aperture={aperture}

@@ -1,452 +1,561 @@
+"use client";
+
 import Link from "next/link";
-import { HeroEffects } from "./hero-effects";
+import Image from "next/image";
+import { useState } from "react";
+import { GL } from "./gl";
 import { Pill } from "./pill";
-import { Button } from "./ui/button";
+import { FluidCTA } from "./fluid-cta";
+import { clients, novaProducts, processSteps, services } from "@/lib/site-content";
 
-const capabilityItems = [
+const storySteps = [
   {
-    title: "Lead generation",
-    body: "Targeted demand generation shaped around the clients you actually want.",
+    step: "01",
+    eyebrow: "The signal",
+    title: "Good businesses lose momentum in the handoff.",
+    body:
+      "A visitor lands, an enquiry arrives, a sales conversation starts, and the follow-up depends on too many manual steps.",
+    metric: "Faster response",
   },
   {
-    title: "Sales support",
-    body: "Cleaner follow-up, faster response, and better handoff between interest and action.",
+    step: "02",
+    eyebrow: "The system",
+    title: "Growth needs one connected operating layer.",
+    body:
+      "NovaLeads connects brand, website, software, AI reception, lead generation, and automation so the next step is obvious.",
+    metric: "Cleaner flow",
   },
   {
-    title: "Brand and web",
-    body: "Sharper positioning, websites, and landing pages that earn trust early.",
-  },
-  {
-    title: "Automation",
-    body: "Practical systems that remove drag without removing the human touch.",
+    step: "03",
+    eyebrow: "The shift",
+    title: "The business starts moving with less drag.",
+    body:
+      "The offer is easier to understand, enquiries are easier to capture, and the team spends more time on real opportunities.",
+    metric: "Sharper execution",
   },
 ] as const;
 
-const serviceItems = [
-  {
-    id: "01",
-    title: "Lead generation",
-    body: "Campaigns, offers, and outreach designed around the market you want to win in, not generic traffic for its own sake.",
-  },
-  {
-    id: "02",
-    title: "Sales and business development",
-    body: "Support across follow-up, conversion flow, and the simple systems that help good conversations turn into real opportunities.",
-  },
-  {
-    id: "03",
-    title: "Marketing and branding",
-    body: "Clearer messaging, stronger positioning, and a sharper digital presence that helps people trust the business faster.",
-  },
-  {
-    id: "04",
-    title: "Consulting and strategy",
-    body: "Honest guidance on what needs attention first, what can wait, and where growth is getting slowed down unnecessarily.",
-  },
-  {
-    id: "05",
-    title: "Business process automation",
-    body: "Thoughtful automation that replaces repetitive manual work so the team can focus on higher-value tasks.",
-  },
-] as const;
-
-const processItems = [
-  {
-    id: "01",
-    title: "Diagnose",
-    body: "We look closely at the business as it is now: goals, offer, market, bottlenecks, and the processes that are quietly holding growth back.",
-  },
-  {
-    id: "02",
-    title: "Design",
-    body: "We shape a plan around your stage of growth, blending the right mix of positioning, lead flow, sales support, and automation.",
-  },
-  {
-    id: "03",
-    title: "Deploy",
-    body: "We build and launch alongside you with clear milestones, useful reporting, and a focus on outcomes that matter in the real business.",
-  },
-] as const;
-
-const signalItems = [
-  { value: "Lower", label: "admin drag" },
-  { value: "Faster", label: "sales response" },
-  { value: "Sharper", label: "execution" },
-] as const;
-
-const principleItems = [
-  "Tailored to your market",
-  "Built around your sales style",
-  "Specific to your audience",
-  "Designed for your growth stage",
-  "Replacing old with better",
-] as const;
-
-const resultItems = [
-  {
-    title: "Clearer positioning",
-    body: "People understand the value of the business faster, which makes every campaign and conversation work harder.",
-  },
-  {
-    title: "Better response flow",
-    body: "Enquiries get handled with more consistency, less delay, and fewer opportunities slipping through the cracks.",
-  },
-  {
-    title: "Smarter operations",
-    body: "The business feels lighter to run because repetitive tasks, clunky handoffs, and old workarounds start to disappear.",
-  },
-] as const;
-
-const industryItems = [
-  "Healthcare",
-  "Real estate",
-  "Professional services",
-  "Logistics and machinery",
-  "Non-profits",
-  "Local service businesses",
-  "Growing SMEs",
-] as const;
-
-const locationItems = [
-  "Cape Town",
-  "Johannesburg",
-  "Working beyond South Africa",
-] as const;
-
-const faqItems = [
-  {
-    question: "What kind of work does NovaLeads actually do?",
-    answer:
-      "NovaLeads works across lead generation, sales support, branding, websites, strategy, and automation. The mix depends on what the business actually needs, not on a fixed package.",
-  },
-  {
-    question: "Is this only for businesses that want AI or automation?",
-    answer:
-      "No. Automation is used where it improves speed, consistency, or admin load. The goal is a better-running business, not forcing technology where it does not belong.",
-  },
-  {
-    question: "Do I need a brand-new website before we start?",
-    answer:
-      "Not necessarily. Sometimes the right move is a new landing page or a sharper site. Sometimes it is messaging, follow-up, or strategy first. We diagnose before we prescribe.",
-  },
-  {
-    question: "Do you only work in South Africa?",
-    answer:
-      "NovaLeads is based in South Africa and can support businesses locally as well as teams operating in other markets.",
-  },
-] as const;
-
-const panelClass =
-  "relative overflow-hidden rounded-[2rem] border border-white/16 bg-[rgba(233,238,249,0.12)] p-6 shadow-[0_28px_80px_rgba(8,25,72,0.22)] backdrop-blur-xl md:p-7";
-
-export function Hero() {
+function HeroTrendline() {
   return (
-    <div className="relative isolate overflow-hidden">
-      <HeroEffects />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,25,72,0.14),rgba(8,25,72,0.4)_24%,rgba(8,25,72,0.74)_100%)]" />
-
-      <section
-        id="top"
-        data-hero-section
-        className="relative flex min-h-svh scroll-mt-32 items-center overflow-hidden pt-28"
+    <div className="pointer-events-none absolute inset-x-0 bottom-[8%] z-[2] h-[30rem] opacity-100 md:bottom-[2%] md:h-[42rem]">
+      <svg
+        className="hero-trendline h-full w-full"
+        viewBox="0 0 1440 520"
+        fill="none"
+        preserveAspectRatio="none"
+        aria-hidden="true"
       >
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] bg-[radial-gradient(circle_at_50%_0%,rgba(233,238,249,0.16),transparent_58%)]" />
-        <div className="pointer-events-none absolute left-[-8rem] top-16 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(225,38,45,0.22),transparent_64%)] blur-3xl" />
-        <div className="pointer-events-none absolute right-[-8rem] top-20 h-[32rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(114,144,228,0.3),transparent_62%)] blur-3xl" />
-        <div className="pointer-events-none absolute inset-x-[8%] top-24 h-[36rem] rounded-[999px] bg-[radial-gradient(circle_at_50%_24%,rgba(8,25,72,0.76),rgba(8,25,72,0.46)_48%,transparent_76%)] blur-2xl" />
-        <div
-          data-hero-glow
-          className="pointer-events-none absolute bottom-[-12rem] left-1/2 h-[24rem] w-[96rem] -translate-x-1/2 rounded-[999px] bg-[radial-gradient(circle_at_50%_100%,rgba(233,238,249,0.22),rgba(225,38,45,0.16)_34%,transparent_72%)] blur-3xl"
+        <path
+          className="trendline-echo trendline-echo-one"
+          d="M74 416 C220 380 326 286 450 294 C586 302 642 354 778 202 C900 66 1064 74 1368 100"
+          stroke="url(#hero-growth-gradient-soft)"
+          strokeLinecap="round"
+          strokeWidth="22"
         />
+        <path
+          className="trendline-echo trendline-echo-two"
+          d="M74 416 C220 380 326 286 450 294 C586 302 642 354 778 202 C900 66 1064 74 1368 100"
+          stroke="url(#hero-growth-gradient-soft)"
+          strokeLinecap="round"
+          strokeWidth="13"
+        />
+        <path
+          d="M74 416 C220 380 326 286 450 294 C586 302 642 354 778 202 C900 66 1064 74 1368 100"
+          stroke="rgba(0,87,184,0.2)"
+          strokeWidth="3"
+        />
+        <path
+          className="trendline-draw"
+          d="M74 416 C220 380 326 286 450 294 C586 302 642 354 778 202 C900 66 1064 74 1368 100"
+          stroke="url(#hero-growth-gradient)"
+          strokeLinecap="round"
+          strokeWidth="8"
+        />
+        <path
+          className="trendline-comet"
+          d="M74 416 C220 380 326 286 450 294 C586 302 642 354 778 202 C900 66 1064 74 1368 100"
+          stroke="#ffffff"
+          strokeLinecap="round"
+          strokeWidth="5"
+        />
+        {[
+          [450, 294],
+          [778, 202],
+          [1064, 74],
+          [1368, 100],
+        ].map(([cx, cy], index) => (
+          <g key={`${cx}-${cy}`}>
+            <circle
+              className="trendline-node-halo"
+              cx={cx}
+              cy={cy}
+              r={index === 3 ? 24 : 19}
+              fill={index % 2 === 0 ? "#0057B8" : "#E1262D"}
+              style={{ animationDelay: `${0.24 + index * 0.2}s` }}
+            />
+            <circle
+              className="trendline-node"
+              cx={cx}
+              cy={cy}
+              r={index === 3 ? 11 : 8}
+              fill={index % 2 === 0 ? "#0057B8" : "#E1262D"}
+              style={{ animationDelay: `${0.24 + index * 0.2}s` }}
+            />
+          </g>
+        ))}
+        <defs>
+          <linearGradient
+            id="hero-growth-gradient"
+            x1="74"
+            x2="1368"
+            y1="416"
+            y2="100"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#0057B8" stopOpacity="0.7" />
+            <stop offset="0.44" stopColor="#0B7CFF" />
+            <stop offset="1" stopColor="#E1262D" />
+          </linearGradient>
+          <linearGradient
+            id="hero-growth-gradient-soft"
+            x1="74"
+            x2="1368"
+            y1="416"
+            y2="100"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#0057B8" stopOpacity="0.04" />
+            <stop offset="0.52" stopColor="#0B7CFF" stopOpacity="0.18" />
+            <stop offset="1" stopColor="#E1262D" stopOpacity="0.16" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
 
-        <div className="container relative grid min-h-svh items-end gap-10 pb-20 pt-14 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] lg:gap-12">
-          <div className="relative max-w-[780px] self-end">
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.12)] text-foreground/82">
-              Business growth partners
-            </Pill>
-            <p className="mt-7 font-mono text-[11px] uppercase tracking-[0.32em] text-foreground/60">
-              Lead generation, sales, branding, strategy, and automation
-            </p>
-            <h1
-              data-hero-title
-              className="relative mt-6 max-w-[12ch] font-sentient text-5xl leading-[0.92] tracking-[-0.08em] text-foreground [text-shadow:0_14px_44px_rgba(8,25,72,0.42)] sm:text-6xl md:text-7xl lg:text-[7.15rem]"
-              style={{ transformOrigin: "left top" }}
-            >
-              Out with the old.{" "}
-              <i className="font-light text-foreground/92">
-                In with a business that actually grows.
-              </i>
-            </h1>
-            <p className="mt-8 max-w-[720px] text-pretty text-base leading-8 text-foreground/80 sm:text-[1.08rem]">
-              Over the last two months, we have helped businesses sharpen their
-              message, rebuild pages, strengthen follow-up, and put smarter
-              systems behind the work. NovaLeads works best when we can show up
-              as a hands-on partner across strategy, sales, branding, and
-              practical automation.
-            </p>
-
-            <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-              <Button asChild>
-                <Link data-gl-trigger href="#contact">
-                  Book a free 30-minute growth audit
-                </Link>
-              </Button>
-              <Button asChild variant="secondary">
-                <Link href="#process">See how we work</Link>
-              </Button>
-            </div>
-
-            <div className="mt-10 flex flex-wrap gap-3">
-              {locationItems.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-white/14 bg-[rgba(233,238,249,0.08)] px-4 py-2 text-xs font-mono uppercase tracking-[0.2em] text-foreground/72"
-                >
-                  {item}
+function StoryVisual({ index }: { index: number }) {
+  if (index === 0) {
+    return (
+      <div className="story-visual mt-10 p-6">
+        <div className="relative z-10 grid h-full min-h-[190px] content-center gap-5">
+          {["Website visit", "Missed follow-up", "Cold opportunity"].map(
+            (item, itemIndex) => (
+              <div
+                key={item}
+                className="flex items-center gap-4 rounded-2xl border border-[#061327]/10 bg-white/60 p-4"
+              >
+                <span className="flow-node h-4 w-4 rounded-full bg-primary shadow-[0_0_20px_rgba(225,38,45,0.6)]" />
+                <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#061327]/66">
+                  {itemIndex + 1}. {item}
                 </span>
-              ))}
-            </div>
-
-            <p className="mt-8 max-w-[640px] text-sm leading-7 text-foreground/60">
-              The aim is simple: clearer positioning, stronger lead flow,
-              faster response, and a business that feels easier to move
-              forward.
-            </p>
-          </div>
-
-          <div className="relative grid gap-6 lg:pb-8">
-            <article className={panelClass}>
-              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
-                Our story and the case for change
-              </p>
-              <blockquote className="mt-6 max-w-[18ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-[2.4rem]">
-                "We kept seeing good businesses held back not by lack of
-                ambition, but by outdated processes, unclear positioning, and
-                too much manual work."
-              </blockquote>
-              <p className="mt-6 max-w-[52ch] text-base leading-8 text-foreground/76">
-                That is why the work now reaches beyond one tactic. We diagnose
-                what is slowing growth, design what fits the business, and
-                deploy the pages, campaigns, systems, and support that help it
-                move with more confidence.
-              </p>
-            </article>
-
-            <article className={panelClass}>
-              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
-                What the last two months confirmed
-              </p>
-              <h2 className="mt-5 max-w-[18ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-[2.3rem]">
-                Businesses pulling ahead are the ones responding faster,
-                communicating clearly, and using automation intelligently.
-              </h2>
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {signalItems.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-[1.35rem] border border-white/14 bg-[rgba(255,255,255,0.05)] px-4 py-4"
-                  >
-                    <strong className="block font-sentient text-3xl tracking-[-0.06em] text-foreground">
-                      {item.value}
-                    </strong>
-                    <p className="mt-2 text-sm leading-6 text-foreground/68">
-                      {item.label}
-                    </p>
-                  </div>
-                ))}
               </div>
-            </article>
+            )
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 1) {
+    return (
+      <div className="story-visual mt-10 p-6">
+        <div className="relative z-10 flex min-h-[190px] items-center justify-center">
+          <div className="relative h-40 w-40 rounded-full border border-[#0B7CFF]/55">
+            {["Brand", "Web", "AI", "Sales"].map((item, nodeIndex) => (
+              <div
+                key={item}
+                className="flow-node absolute flex h-16 w-16 items-center justify-center rounded-full border border-[#061327]/12 bg-[#0057B8]/12 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-[#061327]"
+                style={{
+                  left: `${50 + Math.cos((nodeIndex / 4) * Math.PI * 2) * 48}%`,
+                  top: `${50 + Math.sin((nodeIndex / 4) * Math.PI * 2) * 48}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                {item}
+              </div>
+            ))}
+            <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-center font-mono text-[10px] uppercase tracking-[0.12em] text-white shadow-[0_0_44px_rgba(225,38,45,0.48)]">
+              Growth
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+    );
+  }
 
-      <section className="relative border-y border-white/12 bg-[rgba(233,238,249,0.08)] backdrop-blur-xl">
-        <div className="container grid gap-px md:grid-cols-4">
-          {capabilityItems.map((item, index) => (
-            <article key={item.title} className="px-0 py-6 md:px-6 md:py-7">
-              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/48">
-                0{index + 1}
-              </p>
-              <strong className="mt-3 block font-sentient text-2xl tracking-[-0.05em] text-foreground">
-                {item.title}
-              </strong>
-              <p className="mt-4 max-w-[28ch] text-sm leading-7 text-foreground/68">
+  return (
+    <div className="story-visual mt-10 p-6">
+      <div className="relative z-10 flex min-h-[190px] items-end gap-4">
+        {[34, 52, 72, 92].map((height, barIndex) => (
+          <div
+            key={height}
+            className="growth-bar flex-1 rounded-t-2xl bg-[linear-gradient(180deg,#E1262D,#0057B8)] shadow-[0_0_26px_rgba(0,87,184,0.28)]"
+            style={{
+              height: `${height}%`,
+              animationDelay: `${barIndex * 0.18}s`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ScrollStory() {
+  return (
+    <section className="relative z-10 border-y border-[#061327]/10 bg-white/82 py-24 backdrop-blur-md md:py-36">
+      <div className="container grid gap-12 lg:grid-cols-[0.88fr_1.12fr]">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <Pill>Growth story</Pill>
+          <h2 className="mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+            From signal to system.
+          </h2>
+          <p className="mt-6 max-w-[520px] text-base leading-8 text-[#061327]/62">
+            Scroll through the growth path: where momentum leaks, how the
+            operating layer connects, and what changes once the system is live.
+          </p>
+          <div className="relative mt-10 hidden h-44 overflow-hidden rounded-[1.5rem] border border-[#061327]/12 bg-white/72 lg:block">
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 620 190"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M28 146 C116 136 142 92 226 102 S358 126 424 62 S538 31 594 42"
+                stroke="rgba(6,19,39,0.16)"
+                strokeWidth="2"
+              />
+              <path
+                className="growth-line"
+                d="M28 146 C116 136 142 92 226 102 S358 126 424 62 S538 31 594 42"
+                stroke="#E1262D"
+                strokeLinecap="round"
+                strokeWidth="4"
+              />
+            </svg>
+            <div className="hero-signal absolute inset-x-8 bottom-0 h-20" />
+          </div>
+        </div>
+
+        <div className="grid gap-[45vh] pb-[12vh] pt-4">
+          {storySteps.map((item, index) => (
+            <article
+              key={item.step}
+              className="story-card nova-card min-h-[58vh] rounded-[2rem] p-7 md:p-10"
+            >
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
+                    {item.step} / {item.eyebrow}
+                  </p>
+                  <h3 className="mt-8 max-w-[11ch] font-sentient text-5xl leading-[0.94] tracking-[-0.08em] text-[#061327] md:text-6xl">
+                    {item.title}
+                  </h3>
+                </div>
+                <span className="hidden rounded-full border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary sm:inline-flex">
+                  {item.metric}
+                </span>
+              </div>
+              <p className="mt-16 max-w-[54ch] text-lg leading-8 text-[#061327]/66">
                 {item.body}
               </p>
+              <StoryVisual index={index} />
             </article>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section
-        id="services"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.1),rgba(8,25,72,0.32)_18%,rgba(8,25,72,0.16)_100%)] py-28 md:py-36"
-      >
-        <div className="container grid gap-14 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
-          <div>
-            <div className="max-w-[860px]">
-              <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-                What we deliver
-              </Pill>
-              <h2 className="mt-8 max-w-[12ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5.35rem]">
-                Full-service support, built around the business in front of us.
-              </h2>
-              <p className="mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/76 sm:text-lg">
-                This is not about pushing one offer. It is about combining the
-                right pieces so growth feels more intentional, more personal,
-                and less held back by old ways of working.
-              </p>
+function PoweredByNova() {
+  return (
+    <section
+      id="products"
+      className="relative z-10 border-y border-[#061327]/10 bg-white/90 py-24 backdrop-blur-md md:py-36"
+    >
+      <div className="container grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <Pill>Powered by Nova</Pill>
+          <h2 className="mt-7 max-w-[11ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+            Products that keep growth moving.
+          </h2>
+          <p className="mt-6 max-w-[560px] text-base leading-8 text-[#061327]/62">
+            SiteRent and BizStack are Nova-built products: practical software
+            layers for businesses that need a sharper web presence and a
+            cleaner operating system.
+          </p>
+
+          <div className="product-panel nova-card relative mt-10 overflow-hidden rounded-[2rem] p-5">
+            <div className="relative z-10 rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
+              <Image
+                src="/poweredbynova.jpeg"
+                alt="Powered by Nova products: SiteRent and BizStack"
+                width={720}
+                height={360}
+                className="mx-auto max-h-52 w-full object-contain"
+              />
             </div>
-
-            <div className="mt-16 border-y border-white/12">
-              {serviceItems.map((item) => (
-                <article
-                  key={item.id}
-                  className="grid gap-4 border-b border-white/12 py-8 last:border-b-0 md:grid-cols-[110px_minmax(0,0.86fr)_minmax(0,1fr)] md:gap-10"
+            <svg
+              className="pointer-events-none absolute inset-x-4 bottom-4 h-28"
+              viewBox="0 0 520 130"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 104 C82 94 108 66 176 73 S292 88 350 38 S446 16 508 24"
+                stroke="rgba(6,19,39,0.14)"
+                strokeWidth="2"
+                fill="none"
+              />
+              <path
+                className="product-growth-line"
+                d="M12 104 C82 94 108 66 176 73 S292 88 350 38 S446 16 508 24"
+                stroke="url(#product-growth-gradient)"
+                strokeLinecap="round"
+                strokeWidth="5"
+                fill="none"
+              />
+              <defs>
+                <linearGradient
+                  id="product-growth-gradient"
+                  x1="12"
+                  x2="508"
+                  y1="104"
+                  y2="24"
+                  gradientUnits="userSpaceOnUse"
                 >
-                  <span className="font-sentient text-3xl tracking-[-0.06em] text-foreground/34">
-                    {item.id}
-                  </span>
-                  <h3 className="font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl">
-                    {item.title}
-                  </h3>
-                  <p className="max-w-[40ch] text-base leading-8 text-foreground/74">
-                    {item.body}
-                  </p>
-                </article>
-              ))}
-            </div>
+                  <stop stopColor="#0057B8" />
+                  <stop offset="1" stopColor="#E1262D" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
+        </div>
 
-          <aside className="grid gap-6 xl:pt-28">
-            <article className={panelClass}>
-              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
-                Tailored in practice
+        <div className="grid gap-[26vh] pb-[10vh] pt-4">
+          {novaProducts.map((product, index) => (
+            <Link
+              key={product.slug}
+              href={`/products/${product.slug}`}
+              className="product-story-card nova-card group min-h-[62vh] rounded-[2rem] p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/45 md:p-10"
+            >
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
+                    0{index + 1} / {product.eyebrow}
+                  </p>
+                  <h3 className="mt-8 font-sentient text-6xl leading-none tracking-[-0.08em] text-[#061327] md:text-7xl">
+                    {product.name}
+                  </h3>
+                </div>
+                <span className="hidden rounded-full border border-[#0057B8]/25 bg-[#0057B8]/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-[#0057B8] sm:inline-flex">
+                  Powered
+                </span>
+              </div>
+
+              <p className="mt-14 max-w-[56ch] text-lg leading-8 text-[#061327]/66">
+                {product.short}
               </p>
-              <div className="mt-6 grid gap-3">
-                {principleItems.map((item, index) => (
+
+              <div className="mt-10 grid gap-3">
+                {product.features.map((feature) => (
                   <div
-                    key={item}
-                    className="flex items-start gap-4 rounded-[1.2rem] border border-white/12 bg-[rgba(255,255,255,0.05)] px-4 py-4"
+                    key={feature}
+                    className="flex items-center justify-between gap-4 rounded-2xl border border-[#061327]/12 bg-white/70 px-5 py-4"
                   >
-                    <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
-                      0{index + 1}
+                    <span className="text-base text-[#061327]/76">
+                      {feature}
                     </span>
-                    <p className="text-sm leading-7 text-foreground/74">
-                      {item}
-                    </p>
+                    <span className="h-2 w-12 rounded-full bg-[linear-gradient(90deg,#0057B8,#E1262D)]" />
                   </div>
                 ))}
               </div>
-            </article>
 
-            <article className={panelClass}>
-              <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/58">
-                How we tend to show up best
-              </p>
-              <h3 className="mt-5 max-w-[14ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground">
-                No templates. No one-size-fits-all package. Built around you.
-              </h3>
-              <p className="mt-5 text-base leading-8 text-foreground/74">
-                The recent work has made that even clearer. Businesses respond
-                well when the plan fits their actual market, team capacity, and
-                stage of growth, not an agency playbook copied from somewhere
-                else.
-              </p>
-            </article>
-          </aside>
+              <div className="mt-10 flex items-end gap-3">
+                {[36, 50, 68, 86].map((height, barIndex) => (
+                  <span
+                    key={height}
+                    className="product-bar flex-1 rounded-t-2xl bg-[linear-gradient(180deg,#E1262D,#0057B8)]"
+                    style={{
+                      height: `${height + index * 6}px`,
+                      animationDelay: `${barIndex * 0.16}s`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              <span className="mt-10 inline-block font-mono text-xs uppercase text-primary opacity-70 transition group-hover:opacity-100">
+                View product
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Hero() {
+  const [hovering, setHovering] = useState(false);
+
+  return (
+    <main className="relative z-10">
+      <section className="relative flex min-h-svh flex-col justify-between overflow-hidden">
+        <GL hovering={hovering} />
+        <div className="hero-signal pointer-events-none absolute inset-x-[16%] top-[22%] z-[1] h-44 opacity-80" />
+        <HeroTrendline />
+        <div className="container relative z-10 mt-auto pb-16 pt-36 text-center">
+          <Pill className="mb-6">NovaLeads Growth Partner</Pill>
+          <h1 className="mx-auto max-w-[920px] font-sentient text-5xl leading-[0.93] tracking-[-0.08em] text-[#061327] sm:text-6xl md:text-7xl lg:text-[7.5rem]">
+            Unlock your <br />
+            <i className="font-light">future</i> growth
+          </h1>
+          <p className="mx-auto mt-8 max-w-[650px] text-balance font-mono text-sm leading-7 text-[#061327]/62 sm:text-base">
+            We are the future and the future is here. Leads, web, software, AI
+            reception, brand, strategy, and automation built as one growth
+            system.
+          </p>
+
+          <div
+            className="mt-12"
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+          >
+            <FluidCTA />
+          </div>
         </div>
       </section>
 
-      <section
-        id="process"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.18),rgba(8,25,72,0.4)_24%,rgba(8,25,72,0.14)_100%)] py-28 md:py-36"
-      >
-        <div className="container grid gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-              How we work
-            </Pill>
-            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl">
-              Diagnose, design, and deploy with clarity.
+      <ScrollStory />
+
+      <PoweredByNova />
+
+      <section className="relative z-10 border-t border-[#061327]/10 bg-white/78 py-24 backdrop-blur-md md:py-32">
+        <div className="container">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <Pill>Services</Pill>
+              <h2 className="mt-7 max-w-[11ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+                Built around growth, not noise.
+              </h2>
+            </div>
+            <Link
+              href="/services/lead-generation"
+              className="font-mono text-sm uppercase text-primary hover:text-primary/80"
+            >
+              Explore services
+            </Link>
+          </div>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {services.slice(0, 3).map((service, index) => (
+              <Link
+                key={service.slug}
+                href={`/services/${service.slug}`}
+                className="nova-card group min-h-[330px] rounded-[2rem] p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/45"
+              >
+                <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
+                  0{index + 1} / {service.eyebrow}
+                </p>
+                <h3 className="mt-8 font-sentient text-4xl leading-none tracking-[-0.07em] text-[#061327]">
+                  {service.title}
+                </h3>
+                <p className="mt-24 max-w-[30ch] text-base leading-7 text-[#061327]/64">
+                  {service.short}
+                </p>
+                <span className="mt-7 inline-block font-mono text-xs uppercase text-primary opacity-70 transition group-hover:opacity-100">
+                  View detail
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 bg-white py-24 md:py-32">
+        <div className="container grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div>
+            <Pill>People worked with</Pill>
+            <h2 className="mt-7 max-w-[12ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+              Proof in the work.
             </h2>
-            <p className="mt-8 max-w-[620px] text-base leading-8 text-foreground/76 sm:text-lg">
-              The method is simple on purpose. We learn the business properly,
-              shape the right response, and execute with you so the work lands
-              in reality instead of staying in a slide deck.
+            <p className="mt-6 max-w-[520px] text-base leading-8 text-[#061327]/62">
+              Logos, project notes, and testimonials live on their own pages so
+              each piece of work can stand on its own.
             </p>
-
-            <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/16 bg-[rgba(233,238,249,0.12)] p-5 shadow-[0_24px_80px_rgba(8,25,72,0.24)] backdrop-blur-xl md:p-7">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(233,238,249,0.18),transparent_24%),radial-gradient(circle_at_50%_82%,rgba(225,38,45,0.18),transparent_28%)]" />
-              <div className="relative min-h-[420px]">
-                <div className="absolute left-1/2 top-[15%] h-[70%] w-px -translate-x-1/2 bg-white/14" />
-                <div
-                  data-process-line
-                  className="absolute left-1/2 top-[15%] w-px -translate-x-1/2 bg-gradient-to-b from-[#e9eef9] via-[#7f96df] to-[#e1262d]"
-                  style={{ height: "0%" }}
-                />
-                <div
-                  data-process-dot
-                  className="absolute left-1/2 top-[15%] size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f7f9ff] shadow-[0_0_36px_rgba(225,38,45,0.45)]"
-                />
-                <div className="absolute inset-x-[14%] top-[13%] aspect-square rounded-full border border-white/12" />
-                <div className="absolute inset-x-[24%] top-[23%] aspect-square rounded-full border border-white/12" />
-                <div className="absolute inset-x-[34%] top-[33%] aspect-square rounded-full border border-white/12" />
-
-                <div className="absolute inset-x-0 bottom-0">
-                  <div className="rounded-[1.75rem] border border-white/16 bg-[rgba(8,25,72,0.42)] p-5 backdrop-blur-xl md:p-6">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/52">
-                      NovaLeads method
-                    </p>
-                    <span
-                      data-process-signal-step
-                      className="mt-4 block font-sentient text-6xl tracking-[-0.08em] text-foreground/30"
-                    >
-                      01
-                    </span>
-                    <h3
-                      data-process-signal-title
-                      className="mt-2 font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl"
-                    >
-                      {processItems[0].title}
-                    </h3>
-                    <p
-                      data-process-signal-body
-                      className="mt-4 max-w-[34ch] text-sm leading-7 text-foreground/72 sm:text-base"
-                    >
-                      {processItems[0].body}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/work"
+                className="font-mono text-sm uppercase text-primary hover:text-primary/80"
+              >
+                View work
+              </Link>
+              <Link
+                href="/testimonials"
+                className="font-mono text-sm uppercase text-[#061327]/58 hover:text-[#061327]"
+              >
+                Testimonials
+              </Link>
             </div>
           </div>
 
-          <div className="border-y border-white/12">
-            {processItems.map((item, index) => (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {clients.map((client) => (
               <article
-                key={item.id}
-                data-process-step
-                data-step-id={item.id}
-                data-step-title={item.title}
-                data-step-body={item.body}
-                data-active={index === 0 ? "true" : "false"}
-                className="grid gap-3 border-b border-white/12 py-8 opacity-60 transition-all duration-300 data-[active=true]:translate-x-2 data-[active=true]:opacity-100 last:border-b-0 md:grid-cols-[110px_1fr]"
+                key={client.name}
+                className="nova-card rounded-[2rem] p-5 text-center"
               >
-                <span className="font-sentient text-3xl tracking-[-0.06em] text-foreground/34">
-                  {item.id}
+                <div className="flex min-h-52 items-center justify-center rounded-[1.5rem] bg-white p-5">
+                  <Image
+                    src={client.image}
+                    alt={`${client.name} logo`}
+                    width={520}
+                    height={320}
+                    className="max-h-40 w-full object-contain"
+                  />
+                </div>
+                <p className="mt-4 font-sentient text-2xl italic tracking-[-0.05em] text-primary">
+                  {client.work}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 border-y border-[#061327]/10 bg-white/86 py-24 backdrop-blur-md md:py-32">
+        <div className="container grid gap-12 lg:grid-cols-[0.82fr_1.18fr]">
+          <div>
+            <Pill>Method</Pill>
+            <h2 className="mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+              Diagnose. Design. Deploy.
+            </h2>
+            <Link
+              href="/process"
+              className="mt-8 inline-block font-mono text-sm uppercase text-primary hover:text-primary/80"
+            >
+              See process
+            </Link>
+          </div>
+          <div className="grid gap-4">
+            {processSteps.map((step, index) => (
+              <article
+                key={step.title}
+                className="nova-card grid gap-4 rounded-[2rem] p-7 md:grid-cols-[90px_1fr]"
+              >
+                <span className="font-sentient text-5xl tracking-[-0.08em] text-primary/80">
+                  0{index + 1}
                 </span>
                 <div>
-                  <h3 className="font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-3xl">
-                    {item.title}
+                  <h3 className="font-sentient text-4xl tracking-[-0.07em] text-[#061327]">
+                    {step.title}
                   </h3>
-                  <p className="mt-4 max-w-[40ch] text-base leading-8 text-foreground/74">
-                    {item.body}
+                  <p className="mt-3 max-w-[48ch] text-base leading-7 text-[#061327]/62">
+                    {step.body}
                   </p>
                 </div>
               </article>
@@ -455,172 +564,25 @@ export function Hero() {
         </div>
       </section>
 
-      <section
-        id="results"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.16),rgba(8,25,72,0.3)_24%,rgba(8,25,72,0.12)_100%)] py-28 md:py-36"
-      >
+      <section className="relative z-10 bg-white py-24 text-center md:py-32">
         <div className="container">
-          <div className="max-w-[880px]">
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-              What better looks like
-            </Pill>
-            <h2 className="mt-8 max-w-[12ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5rem]">
-              Less friction, stronger follow-through, and growth that feels
-              more grounded.
-            </h2>
-          </div>
-
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
-            {resultItems.map((item) => (
-              <article key={item.title} className={panelClass}>
-                <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-                <h3 className="font-sentient text-3xl tracking-[-0.06em] text-foreground">
-                  {item.title}
-                </h3>
-                <p className="mt-5 max-w-[32ch] text-base leading-8 text-foreground/74">
-                  {item.body}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-12">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-foreground/50">
-              Industries we have been closest to
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {industryItems.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-white/14 bg-[rgba(233,238,249,0.08)] px-4 py-2 text-sm text-foreground/76"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative py-28 md:py-36">
-        <div className="container grid gap-14 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:gap-20">
-          <div>
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-              Our commitment
-            </Pill>
-            <blockquote className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5.15rem]">
-              "We do not believe in one-size-fits-all. Every client gets a
-              partner who shows up fully."
-            </blockquote>
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-primary">
-              Relationships first. Results always.
-            </p>
-          </div>
-
-          <div className="lg:pt-24">
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-              Why it feels more personal
-            </Pill>
-            <h3 className="mt-8 max-w-[13ch] font-sentient text-3xl leading-tight tracking-[-0.06em] text-foreground sm:text-4xl">
-              The recent work has been about getting closer to the real
-              business, not hiding behind generic marketing language.
-            </h3>
-            <p className="mt-6 max-w-[40ch] text-base leading-8 text-foreground/74">
-              Once we started building from what clients were actually dealing
-              with day to day, the work became more honest and more useful. The
-              best results came from clearer offers, better systems, and
-              genuine partnership rather than more noise.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="faq"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.12),rgba(8,25,72,0.28)_20%,rgba(8,25,72,0.16)_100%)] py-28 md:py-36"
-      >
-        <div className="container grid gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
-          <div>
-            <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-              Frequently asked
-            </Pill>
-            <h2 className="mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl">
-              Clear answers, without the agency fog.
-            </h2>
-          </div>
-
-          <div className="border-y border-white/12">
-            {faqItems.map((item, index) => (
-              <details
-                key={item.question}
-                className="border-b border-white/12 py-6 last:border-b-0"
-                open={index === 0}
-              >
-                <summary className="cursor-pointer list-none pr-8 font-sentient text-2xl tracking-[-0.05em] text-foreground sm:text-[2rem] [&::-webkit-details-marker]:hidden">
-                  {item.question}
-                </summary>
-                <p className="mt-4 max-w-[40ch] text-base leading-8 text-foreground/74">
-                  {item.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className="relative scroll-mt-32 bg-[linear-gradient(180deg,rgba(8,25,72,0.14),rgba(8,25,72,0.38)_24%,rgba(8,25,72,0.18)_100%)] pb-10 pt-28 md:pb-16 md:pt-36"
-      >
-        <div className="container border-t border-white/12 pt-16 text-center">
-          <Pill className="border-white/16 bg-[rgba(233,238,249,0.1)] text-foreground/82">
-            Next step
-          </Pill>
-          <h2 className="mx-auto mt-8 max-w-[11ch] font-sentient text-4xl leading-[0.98] tracking-[-0.08em] text-foreground [text-shadow:0_10px_34px_rgba(8,25,72,0.24)] sm:text-5xl md:text-6xl lg:text-[5rem]">
-            Book a free 30-minute growth audit.
+          <Pill>Next step</Pill>
+          <h2 className="mx-auto mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
+            Let us map what grows next.
           </h2>
-          <p className="mx-auto mt-8 max-w-[760px] text-pretty text-base leading-8 text-foreground/76 sm:text-lg">
-            We will identify the clearest growth opportunity your business may
-            be leaving on the table, and the kind of strategy, support, or
-            systems that could help you capture it. No pressure. Just clarity.
+          <p className="mx-auto mt-6 max-w-[580px] text-base leading-8 text-[#061327]/62">
+            The audit turns growth ambition into a practical plan across lead
+            flow, websites, software, AI support, and automation.
           </p>
-
-          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button asChild>
-              <Link data-gl-trigger href="#top">
-                Request a growth audit
-              </Link>
-            </Button>
-            <Button asChild variant="secondary">
-              <Link href="#services">Review services</Link>
-            </Button>
+          <div
+            className="mt-10"
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+          >
+            <FluidCTA label="Start the audit" />
           </div>
         </div>
       </section>
-
-      <footer className="relative pb-10">
-        <div className="container flex flex-col gap-5 border-t border-white/12 pt-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <div className="inline-flex items-center gap-3">
-              <span className="size-2.5 rounded-full bg-primary shadow-glow shadow-primary/60" />
-              <span className="font-sentient text-2xl tracking-[-0.05em]">
-                NovaLeads
-              </span>
-            </div>
-            <p className="mt-3 text-sm text-foreground/58">
-              Based in South Africa, partnering with businesses locally and
-              beyond.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3 text-sm text-foreground/64">
-            <Link href="#services">Services</Link>
-            <Link href="#process">Process</Link>
-            <Link href="#results">Results</Link>
-            <Link href="#faq">FAQ</Link>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </main>
   );
 }

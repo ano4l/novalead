@@ -117,8 +117,8 @@ export class DofPointsMaterial extends THREE.ShaderMaterial {
 
         float colorNoise = periodicNoise(vInitialPosition * 1.8, uTime * 0.15) * 0.14;
         float colorBlend = clamp(0.38 + vPosY * 0.48 + colorNoise, 0.0, 1.0);
-        vec3 coolColor = vec3(0.91, 0.94, 1.0);
-        vec3 warmColor = vec3(0.88, 0.16, 0.2);
+        vec3 coolColor = vec3(0.0, 0.34, 0.72);
+        vec3 warmColor = vec3(0.88, 0.15, 0.18);
         vec3 particleColor = mix(coolColor, warmColor, colorBlend);
 
         gl_FragColor = vec4(particleColor, mix(alpha, sparkleBrightness - 1.1, uTransition));
