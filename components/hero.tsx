@@ -284,9 +284,9 @@ function PoweredByNova() {
             Products that keep growth moving.
           </h2>
           <p className="mt-6 max-w-[560px] text-base leading-8 text-[#061327]/62">
-            SiteRent and BizStack are Nova-built products: practical software
-            layers for businesses that need a sharper web presence and a
-            cleaner operating system.
+            SiteRent, BizStack, and Auris are Nova-built products: practical software
+            layers for businesses that need a sharper web presence, a
+            cleaner operating system, and a receptionist that never sleeps.
           </p>
 
           <div className="product-panel nova-card relative mt-10 overflow-hidden rounded-[2rem] p-5">

@@ -166,7 +166,7 @@ export default function ProductsPage() {
           </h2>
           <p className="mx-auto mt-6 max-w-[620px] text-base leading-8 text-[#061327]/62">
             Start with the audit and we will identify whether SiteRent,
-            BizStack, or a custom Nova-built layer is the right next move.
+            BizStack, Auris, or a custom Nova-built layer is the right next move.
           </p>
           <div className="mt-9">
             <FluidCTA label="Start product audit" />

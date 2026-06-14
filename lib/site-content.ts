@@ -72,6 +72,16 @@ export const novaProducts = [
       "BizStack is a Powered by Nova business ERP inspired by the connected retail operating model: central control, stock visibility, sales capture, inventory management, and optional POS workflows for businesses that need one operational layer.",
     features: ["Inventory management", "Sales and operations visibility", "Optional POS system"],
   },
+  {
+    slug: "auris",
+    name: "Auris",
+    eyebrow: "Always on. Always listening.",
+    short:
+      "An AI receptionist that answers calls, qualifies leads, and books appointments around the clock.",
+    body:
+      "Auris is a Powered by Nova AI receptionist built for businesses that cannot afford to miss an enquiry. It answers calls, captures caller intent, qualifies leads against your criteria, and books appointments directly into your calendar — without a human on standby.",
+    features: ["24/7 AI call answering", "Lead qualification & capture", "Automated appointment booking"],
+  },
 ] as const;
 
 export const clients = [
