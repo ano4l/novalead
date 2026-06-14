@@ -76,8 +76,9 @@ export default async function ProductPage({
               </h3>
               <p className="mt-5 max-w-[56ch] text-base leading-8 text-[#061327]/62">
                 The product sits beside the wider NovaLeads work: lead
-                generation, web and software development, AI receptionist
-                services, branding, strategy, and automation.
+                generation, web and software development, automated
+                business processes and AI auditing, branding, strategy,
+                and automation.
               </p>
             </div>
           </div>

@@ -22,7 +22,7 @@ const storySteps = [
     eyebrow: "The system",
     title: "Growth needs one connected operating layer.",
     body:
-      "NovaLeads connects brand, website, software, AI reception, lead generation, and automation so the next step is obvious.",
+      "NovaLeads connects brand, website, software, automated business processes and AI auditing, lead generation, and automation so the next step is obvious.",
     metric: "Cleaner flow",
   },
   {

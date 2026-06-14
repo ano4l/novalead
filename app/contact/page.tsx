@@ -12,8 +12,8 @@ export default function ContactPage() {
         <div className="nova-card rounded-[2rem] p-8 md:p-14">
           <p className="mx-auto max-w-[620px] text-lg leading-8 text-[#061327]/66">
             The audit can cover lead generation, web and software development,
-            AI receptionist services, branding, sales support, strategy, and
-            automation.
+            automated business processes and AI auditing, branding, sales
+            support, strategy, and automation.
           </p>
           <div className="mt-9">
             <FluidCTA label="Open audit request" />

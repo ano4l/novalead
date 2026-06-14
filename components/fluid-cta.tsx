@@ -97,9 +97,9 @@ export function FluidCTA({
                           help capture it.
                         </p>
                         <p>
-                          Strategy, lead generation, web and software, AI
-                          receptionist services, branding, and automation can
-                          all be part of the audit.
+                          Strategy, lead generation, web and software,
+                          automated business processes and AI auditing,
+                          branding, and automation can all be part of the audit.
                         </p>
                       </div>
                     </div>

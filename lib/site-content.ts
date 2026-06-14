@@ -20,14 +20,14 @@ export const services = [
     outcomes: ["Websites", "Landing pages", "Internal software"],
   },
   {
-    slug: "ai-receptionist-services",
-    eyebrow: "AI support",
-    title: "AI Receptionist Services",
+    slug: "automated-business-processes-ai-auditing",
+    eyebrow: "Operations & AI",
+    title: "Automated Business Processes & AI Auditing",
     short:
-      "Always-on enquiry capture, qualification, routing, and response support.",
+      "Automate repetitive workflows and audit AI systems for reliability and compliance.",
     body:
-      "AI receptionist services help businesses respond faster without adding more admin. The system captures enquiries, qualifies intent, routes the right details, and keeps opportunities from going cold.",
-    outcomes: ["Fast response", "Lead qualification", "Smarter routing"],
+      "We design automated business processes to reduce manual work and friction, and perform AI auditing to ensure models behave reliably, route enquiries correctly, and support measurable outcomes.",
+    outcomes: ["Process automation", "Operational efficiency", "AI audit insights"],
   },
   {
     slug: "branding-marketing",
@@ -98,7 +98,7 @@ export const processSteps = [
   {
     title: "Design",
     body:
-      "Shape the right mix of brand, web, software, AI receptionist, lead flow, and automation.",
+      "Shape the right mix of brand, web, software, automated business processes, AI auditing, lead flow, and automation.",
   },
   {
     title: "Deploy",
