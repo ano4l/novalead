@@ -1,9 +1,24 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { getService, services } from "@/lib/site-content";
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const service = getService(slug);
+
+  return {
+    title: service?.title || "Service",
+    description: service?.short,
+  };
 }
 
 export default async function ServicePage({

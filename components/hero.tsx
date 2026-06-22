@@ -6,7 +6,13 @@ import { useState } from "react";
 import { GL } from "./gl";
 import { Pill } from "./pill";
 import { FluidCTA } from "./fluid-cta";
-import { clients, novaProducts, processSteps, services } from "@/lib/site-content";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import {
+  clients,
+  novaProducts,
+  processSteps,
+  services,
+} from "@/lib/site-content";
 
 const storySteps = [
   {
@@ -130,6 +136,30 @@ function HeroTrendline() {
           </linearGradient>
         </defs>
       </svg>
+    </div>
+  );
+}
+
+function HeroStatBlock() {
+  const { homepageHeroStat } = useSiteSettings();
+
+  if (!homepageHeroStat.value) {
+    return null;
+  }
+
+  return (
+    <div className="mx-auto mt-8 grid max-w-[520px] gap-3 rounded-[1.5rem] border border-[#061327]/10 bg-white/72 p-5 backdrop-blur-md sm:grid-cols-[0.8fr_1.2fr] sm:items-center sm:text-left">
+      <p className="font-sentient text-5xl leading-none tracking-[-0.08em] text-primary">
+        {homepageHeroStat.value}
+      </p>
+      <div>
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#061327]/46">
+          {homepageHeroStat.label}
+        </p>
+        <p className="mt-2 text-sm leading-6 text-[#061327]/58">
+          {homepageHeroStat.supportingText}
+        </p>
+      </div>
     </div>
   );
 }
@@ -361,6 +391,16 @@ function PoweredByNova() {
                 {product.short}
               </p>
 
+              <div className="mt-10 flex min-h-48 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
+                <Image
+                  src={product.image}
+                  alt={product.imageAlt}
+                  width={product.imageWidth}
+                  height={product.imageHeight}
+                  className="max-h-40 w-full object-contain"
+                />
+              </div>
+
               <div className="mt-10 grid gap-3">
                 {product.features.map((feature) => (
                   <div
@@ -427,6 +467,7 @@ export function Hero() {
           >
             <FluidCTA />
           </div>
+          <HeroStatBlock />
         </div>
       </section>
 
@@ -456,15 +497,15 @@ export function Hero() {
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
-                className="nova-card group min-h-[330px] rounded-[2rem] p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/45"
+                className="nova-card group min-h-[330px] rounded-[2rem] p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/45 md:min-h-[30rem]"
               >
-                <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
+                <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42 md:min-h-9">
                   0{index + 1} / {service.eyebrow}
                 </p>
-                <h3 className="mt-8 font-sentient text-4xl leading-none tracking-[-0.07em] text-[#061327]">
+                <h3 className="mt-8 font-sentient text-4xl leading-none tracking-[-0.07em] text-[#061327] md:min-h-36">
                   {service.title}
                 </h3>
-                <p className="mt-24 max-w-[30ch] text-base leading-7 text-[#061327]/64">
+                <p className="mt-12 min-h-0 max-w-[30ch] text-base leading-7 text-[#061327]/64 md:min-h-28">
                   {service.short}
                 </p>
                 <span className="mt-7 inline-block font-mono text-xs uppercase text-primary opacity-70 transition group-hover:opacity-100">

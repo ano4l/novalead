@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PageShell } from "@/components/page-shell";
@@ -5,6 +6,38 @@ import { getNovaProduct, novaProducts } from "@/lib/site-content";
 
 export function generateStaticParams() {
   return novaProducts.map((product) => ({ slug: product.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getNovaProduct(slug);
+
+  if (!product) {
+    return {
+      title: "Product",
+    };
+  }
+
+  return {
+    title: product.name,
+    description: product.short,
+    openGraph: {
+      title: `${product.name} | NovaLeads`,
+      description: product.short,
+      images: [
+        {
+          url: product.image,
+          width: product.imageWidth,
+          height: product.imageHeight,
+          alt: product.imageAlt,
+        },
+      ],
+    },
+  };
 }
 
 export default async function ProductPage({
@@ -60,10 +93,10 @@ export default async function ProductPage({
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div className="rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
               <Image
-                src="/poweredbynova.jpeg"
-                alt="Powered by Nova product logos"
-                width={720}
-                height={360}
+                src={product.image}
+                alt={product.imageAlt}
+                width={product.imageWidth}
+                height={product.imageHeight}
                 className="mx-auto max-h-56 w-full object-contain"
               />
             </div>

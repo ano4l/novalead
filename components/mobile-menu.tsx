@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { siteNavigation } from "@/lib/site-content";
 
 interface MobileMenuProps {
   className?: string;
@@ -12,14 +13,6 @@ interface MobileMenuProps {
 
 export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const menuItems = [
-    { name: "Services", href: "/services/lead-generation" },
-    { name: "Products", href: "/products" },
-    { name: "Work", href: "/work" },
-    { name: "Process", href: "/process" },
-    { name: "Testimonials", href: "/testimonials" },
-  ];
 
   const handleLinkClick = () => {
     setIsOpen(false);
@@ -60,7 +53,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
           <Dialog.Title className="sr-only">Menu</Dialog.Title>
 
           <nav className="flex flex-col space-y-6 container mx-auto">
-            {menuItems.map((item) => (
+            {siteNavigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}

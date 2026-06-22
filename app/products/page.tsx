@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FluidCTA } from "@/components/fluid-cta";
 import { Pill } from "@/components/pill";
 import { novaProducts } from "@/lib/site-content";
+
+export const metadata: Metadata = {
+  title: "Products",
+  description:
+    "Explore Powered by Nova product systems including SiteRent, BizStack, and Auris.",
+};
 
 const productSystem = [
   {
@@ -104,6 +111,15 @@ export default function ProductsPage() {
                 <h3 className="mt-12 font-sentient text-6xl leading-none tracking-[-0.08em] md:text-7xl">
                   {product.name}
                 </h3>
+                <div className="mt-8 flex min-h-44 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
+                  <Image
+                    src={product.image}
+                    alt={product.imageAlt}
+                    width={product.imageWidth}
+                    height={product.imageHeight}
+                    className="max-h-36 w-full object-contain"
+                  />
+                </div>
                 <p className="mt-8 max-w-[54ch] text-lg leading-8 text-[#061327]/66">
                   {product.body}
                 </p>

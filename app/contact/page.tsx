@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { FluidCTA } from "@/components/fluid-cta";
 import { PageShell } from "@/components/page-shell";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Start a NovaLeads growth audit across lead generation, web, software, AI support, and automation.",
+};
 
 export default function ContactPage() {
   return (

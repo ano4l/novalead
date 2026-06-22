@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { PageShell } from "@/components/page-shell";
 import { clients } from "@/lib/site-content";
+
+export const metadata: Metadata = {
+  title: "Testimonials",
+  description:
+    "Client feedback, project notes, and outcomes from businesses NovaLeads has supported.",
+};
 
 export default function TestimonialsPage() {
   return (

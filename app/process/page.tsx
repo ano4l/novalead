@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { processSteps } from "@/lib/site-content";
+
+export const metadata: Metadata = {
+  title: "Process",
+  description:
+    "How NovaLeads diagnoses, designs, and deploys growth systems for businesses.",
+};
 
 export default function ProcessPage() {
   return (

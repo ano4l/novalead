@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import { submitConfiguredForm } from "@/lib/form-submission";
 
 type FluidCTAProps = {
   label?: string;
@@ -16,6 +18,10 @@ export function FluidCTA({
 }: FluidCTAProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [submitState, setSubmitState] = useState<
+    "idle" | "submitting" | "sent" | "needsDestination" | "error"
+  >("idle");
+  const { leadCapture } = useSiteSettings();
 
   useEffect(() => {
     setIsMounted(true);
@@ -28,6 +34,25 @@ export function FluidCTA({
       document.body.style.overflow = "";
     };
   }, [isExpanded]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitState("submitting");
+
+    try {
+      const result = await submitConfiguredForm({
+        endpoint: leadCapture.auditFormEndpoint,
+        fallbackEmail: leadCapture.auditRecipientEmail,
+        form: event.currentTarget,
+        storageKey: "novaleads:audit-request-draft",
+        subject: "NovaLeads growth audit request",
+      });
+
+      setSubmitState(result === "sent" ? "sent" : "needsDestination");
+    } catch {
+      setSubmitState("error");
+    }
+  }
 
   return (
     <>
@@ -104,7 +129,10 @@ export function FluidCTA({
                       </div>
                     </div>
 
-                    <form className="flex-1 space-y-4 rounded-[1.5rem] border border-white/14 bg-[#020816]/42 p-5 backdrop-blur-xl sm:p-7">
+                    <form
+                      className="flex-1 space-y-4 rounded-[1.5rem] border border-white/14 bg-[#020816]/42 p-5 backdrop-blur-xl sm:p-7"
+                      onSubmit={handleSubmit}
+                    >
                       {[
                         ["name", "Full name", "text"],
                         ["email", "Work email", "email"],
@@ -119,7 +147,9 @@ export function FluidCTA({
                           </label>
                           <input
                             id={id}
+                            name={id}
                             type={type}
+                            required={id !== "company"}
                             className="h-12 w-full rounded-xl border border-white/10 bg-[#020816]/50 px-4 text-white outline-none transition focus:border-white/35"
                           />
                         </div>
@@ -133,16 +163,47 @@ export function FluidCTA({
                         </label>
                         <textarea
                           id="message"
+                          name="message"
                           rows={4}
+                          required
                           className="w-full resize-none rounded-xl border border-white/10 bg-[#020816]/50 px-4 py-3 text-white outline-none transition focus:border-white/35"
                         />
                       </div>
                       <button
-                        type="button"
-                        className="h-12 w-full rounded-full bg-white font-medium text-[#00205c] transition hover:bg-white/90"
+                        type="submit"
+                        disabled={submitState === "submitting"}
+                        className="h-12 w-full rounded-full bg-white font-medium text-[#00205c] transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"
                       >
-                        Submit request
+                        {submitState === "submitting"
+                          ? "Submitting..."
+                          : "Submit request"}
                       </button>
+                      {submitState === "sent" && (
+                        <p
+                          className="text-sm leading-6 text-white/72"
+                          role="status"
+                        >
+                          Request sent.
+                        </p>
+                      )}
+                      {submitState === "needsDestination" && (
+                        <p
+                          className="text-sm leading-6 text-white/72"
+                          role="status"
+                        >
+                          Draft saved in this browser. Add an audit endpoint or
+                          recipient email in site settings before launch.
+                        </p>
+                      )}
+                      {submitState === "error" && (
+                        <p
+                          className="text-sm leading-6 text-white/72"
+                          role="alert"
+                        >
+                          The request could not be sent. Check the configured
+                          audit endpoint.
+                        </p>
+                      )}
                     </form>
                   </motion.div>
                 </div>

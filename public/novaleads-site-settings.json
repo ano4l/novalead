@@ -1,0 +1,18 @@
+{
+  "homepageHeroStat": {
+    "value": "",
+    "label": "Confirmed impact metric",
+    "supportingText": "Awaiting Miguel's approved number before this renders on the live homepage."
+  },
+  "footer": {
+    "clientPortalUrl": "",
+    "privacyStatement": "Data-handling statement pending Miguel/legal review.",
+    "referralHref": "/refer"
+  },
+  "leadCapture": {
+    "auditFormEndpoint": "",
+    "referralFormEndpoint": "",
+    "auditRecipientEmail": "",
+    "referralRecipientEmail": ""
+  }
+}
