@@ -118,7 +118,33 @@ export const clients = [
     work: "Web Development",
     note: "Website and digital presence support.",
   },
+  {
+    name: "Ferreira's Autobody Parts",
+    image: "/ferreiras_autobody_logo.jpeg",
+    work: "Client Video",
+    note: "Short client feature from the Ferreira's Autobody Parts team.",
+  },
 ] as const;
+
+export const featuredTestimonialVideo = {
+  client: "Ferreira's Autobody Parts",
+  eyebrow: "Video testimonial",
+  title: "Ferreira's Autobody Parts client feature",
+  description:
+    "A short video feature from Ferreira's Autobody Parts, presented alongside the Ferreira's All German Spares identity.",
+  duration: "42 sec",
+  videoId: "1205943853",
+  playerHash: "63916cf1ca",
+  vimeoUrl: "https://vimeo.com/1205943853?share=copy&fl=sv&fe=ci",
+  logo: "/ferreiras_autobody_logo.jpeg",
+  logoAlt: "Ferreira's All German Spares logo",
+  logoWidth: 500,
+  logoHeight: 250,
+  poster: "/ferreiras-autobody-video-poster.webp",
+  posterAlt: "Video preview for Ferreira's Autobody Parts",
+  posterWidth: 1280,
+  posterHeight: 581,
+} as const;
 
 export const caseStudyIndustries = [
   "Healthcare",

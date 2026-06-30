@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { PageShell } from "@/components/page-shell";
-import { clients } from "@/lib/site-content";
+import { VideoTestimonialPanel } from "@/components/video-testimonial-panel";
+import { clients, featuredTestimonialVideo } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Testimonials",
@@ -16,6 +17,10 @@ export default function TestimonialsPage() {
       title="Proof from the work."
       intro="A dedicated place for client feedback, project notes, and outcomes from businesses NovaLeads has supported."
     >
+      <section className="container pb-8">
+        <VideoTestimonialPanel video={featuredTestimonialVideo} />
+      </section>
+
       <section className="container pb-20">
         <div className="grid gap-5 md:grid-cols-2">
           {clients.map((client) => (
