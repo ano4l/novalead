@@ -114,7 +114,7 @@ export const clients = [
   },
   {
     name: "Hidro Maquinas",
-    image: "/testimonial2.jpeg",
+    image: "/testimonial2.png",
     work: "Web Development",
     note: "Website and digital presence support.",
   },
@@ -155,7 +155,7 @@ export const caseStudies = [
       "A focused web presence and supporting digital layer for a specialist operator that needed to be easier to understand online.",
     outcome: "Website and digital presence support.",
     pullQuote: "Website and digital presence support.",
-    image: "/testimonial2.jpeg",
+    image: "/testimonial2.png",
     status: "Live client",
   },
   {
@@ -176,13 +176,14 @@ export const caseStudies = [
   {
     slug: "healthcare-intake",
     title: "Healthcare intake and missed-call slot",
-    client: "Healthcare case study slot",
+    client: "APSUSM",
     industry: "Healthcare" as CaseStudyIndustry,
     work: "Auris intake audit",
     summary:
       "Reserved for an approved healthcare story covering call triage, appointment routing, and lead capture once client evidence is ready.",
     outcome: "Outcome copy pending approved client data.",
     pullQuote: "Video or testimonial pending.",
+    image: "/APSMUSM-removebg-preview.png",
     status: "Awaiting content",
   },
   {
