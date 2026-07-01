@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Play, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { caseStudyIndustries, caseStudies } from "@/lib/site-content";
 
@@ -11,6 +12,9 @@ type Filter = (typeof filters)[number];
 
 export function CaseStudyFilter() {
   const [activeFilter, setActiveFilter] = useState<Filter>(allFilter);
+  const [expandedStudySlug, setExpandedStudySlug] = useState<string | null>(
+    null
+  );
 
   const visibleStudies = useMemo(() => {
     if (activeFilter === allFilter) {
@@ -30,7 +34,10 @@ export function CaseStudyFilter() {
             <button
               key={filter}
               type="button"
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => {
+                setActiveFilter(filter);
+                setExpandedStudySlug(null);
+              }}
               className={[
                 "h-11 shrink-0 rounded-full border px-4 font-mono text-xs uppercase tracking-[0.16em] transition",
                 isActive
@@ -55,31 +62,72 @@ export function CaseStudyFilter() {
             "image" in study && typeof study.image === "string"
               ? study.image
               : "";
+          const videoTitle =
+            "videoTitle" in study && typeof study.videoTitle === "string"
+              ? study.videoTitle
+              : `${study.title} project video`;
+          const pullQuote =
+            "pullQuote" in study && typeof study.pullQuote === "string"
+              ? study.pullQuote
+              : "";
+          const isExpanded = expandedStudySlug === study.slug;
+          const isLaunchingSoon = study.status
+            .toLowerCase()
+            .includes("launching soon");
 
           return (
             <article
               key={study.slug}
               className="nova-card flex min-h-[560px] flex-col overflow-hidden rounded-[2rem] p-5"
             >
-              {videoEmbedUrl ? (
-                <iframe
-                  src={videoEmbedUrl}
-                  title={`${study.title} video testimonial`}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="aspect-video w-full rounded-[1.5rem] border border-[#061327]/10 bg-[#061327]/8"
-                />
-              ) : image ? (
-                <div className="flex min-h-56 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-6">
-                  <Image
-                    src={image}
-                    alt={`${study.client} logo`}
-                    width={640}
-                    height={420}
-                    className="max-h-40 w-full object-contain"
+              {videoEmbedUrl && isExpanded ? (
+                <div className="relative overflow-hidden rounded-[1.5rem] border border-[#061327]/10 bg-[#061327]/8">
+                  <iframe
+                    src={videoEmbedUrl}
+                    title={videoTitle}
+                    loading="lazy"
+                    allow="fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    className="h-64 w-full border-0 bg-[#061327]/8"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setExpandedStudySlug(null)}
+                    className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white text-[#061327] shadow-[0_12px_28px_rgba(0,0,0,0.22)] transition hover:bg-[#061327] hover:text-white"
+                    aria-label={`Collapse ${study.client} demo video`}
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </button>
                 </div>
+              ) : image ? (
+                videoEmbedUrl ? (
+                  <button
+                    type="button"
+                    onClick={() => setExpandedStudySlug(study.slug)}
+                    className="flex min-h-56 w-full cursor-pointer items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-6 text-left transition hover:border-[#0057B8]/28 focus:outline-none focus:ring-2 focus:ring-[#0057B8]/30"
+                    aria-label={`Expand ${study.client} demo video`}
+                    aria-expanded={isExpanded}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${study.client} logo`}
+                      width={640}
+                      height={420}
+                      className="max-h-40 w-full object-contain"
+                    />
+                  </button>
+                ) : (
+                  <div className="flex min-h-56 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-6">
+                    <Image
+                      src={image}
+                      alt={`${study.client} logo`}
+                      width={640}
+                      height={420}
+                      className="max-h-40 w-full object-contain"
+                    />
+                  </div>
+                )
               ) : (
                 <div className="relative flex min-h-56 overflow-hidden rounded-[1.5rem] border border-[#061327]/10 bg-white p-6">
                   <div className="hero-signal absolute inset-x-6 top-12 h-28 opacity-70" />
@@ -98,7 +146,14 @@ export function CaseStudyFilter() {
               <span className="rounded-full border border-[#0057B8]/20 bg-[#0057B8]/8 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#0057B8]">
                 {study.industry}
               </span>
-              <span className="rounded-full border border-[#061327]/10 bg-white/72 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#061327]/50">
+              <span
+                className={[
+                  "rounded-full border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em]",
+                  isLaunchingSoon
+                    ? "border-[#D97706]/24 bg-[#F59E0B]/12 text-[#92400E]"
+                    : "border-[#061327]/10 bg-white/72 text-[#061327]/50",
+                ].join(" ")}
+              >
                 {study.status}
               </span>
             </div>
@@ -125,9 +180,29 @@ export function CaseStudyFilter() {
               </div>
             </div>
 
-            <blockquote className="mt-auto pt-6 font-sentient text-2xl italic leading-tight tracking-[-0.05em] text-primary">
-              &quot;{study.pullQuote}&quot;
-            </blockquote>
+            {videoEmbedUrl ? (
+              <button
+                type="button"
+                onClick={() =>
+                  setExpandedStudySlug(isExpanded ? null : study.slug)
+                }
+                className="mt-6 inline-flex h-11 w-fit items-center gap-2 rounded-full bg-primary px-4 font-mono text-xs uppercase tracking-[0.14em] text-white shadow-[0_18px_34px_rgba(225,38,45,0.2)] transition hover:bg-primary/90"
+                aria-expanded={isExpanded}
+              >
+                {isExpanded ? (
+                  <X className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+                )}
+                {isExpanded ? "Hide demo" : "Watch demo"}
+              </button>
+            ) : null}
+
+            {pullQuote ? (
+              <blockquote className="mt-auto pt-6 font-sentient text-2xl italic leading-tight tracking-[-0.05em] text-primary">
+                &quot;{pullQuote}&quot;
+              </blockquote>
+            ) : null}
             </article>
           );
         })}
