@@ -118,6 +118,18 @@ export const clients = [
     work: "Web Development",
     note: "Website and digital presence support.",
   },
+  {
+    name: "Modern Mystery",
+    image: "/ModernMysteryLogo.jpeg",
+    work: "Web Development",
+    note: "Website build for a construction, building maintenance, and supplies company.",
+  },
+  {
+    name: "Joppa Construction",
+    image: "/joppa-construction-logo.png",
+    work: "Web Development",
+    note: "Website build for a construction company.",
+  },
 ] as const;
 
 export const caseStudyIndustries = [
