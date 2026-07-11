@@ -120,13 +120,13 @@ export const clients = [
   },
   {
     name: "Modern Mystery",
-    image: "/ModernMysteryLogo.jpeg",
+    image: "/modern-mystery-logo-transparent.png",
     work: "Web Development",
     note: "Website build for a construction, building maintenance, and supplies company.",
   },
   {
     name: "Joppa Construction",
-    image: "/joppa-construction-logo.png",
+    image: "/joppa-construction-logo-transparent.png",
     work: "Web Development",
     note: "Website build for a construction company.",
   },
