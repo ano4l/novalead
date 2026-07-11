@@ -6,7 +6,7 @@ import { PageShell } from "@/components/page-shell";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Filter NovaLeads work by industry across healthcare, HVAC, hospitality, professional services, and real estate.",
+    "Filter NovaLeads work by industry across construction, healthcare, HVAC, hospitality, professional services, and real estate.",
 };
 
 export default function WorkPage() {
@@ -14,7 +14,7 @@ export default function WorkPage() {
     <PageShell
       eyebrow="People worked with"
       title="Brands moving into what is next."
-      intro="A focused view of the businesses NovaLeads has supported, with industry slots ready for approved case-study evidence."
+      intro="A focused view of the businesses NovaLeads has supported, including construction website builds and industry slots ready for approved case-study evidence."
     >
       <section className="container pb-20">
         <CaseStudyFilter />

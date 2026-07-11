@@ -525,8 +525,8 @@ export function Hero() {
               Proof in the work.
             </h2>
             <p className="mt-6 max-w-[520px] text-base leading-8 text-[#061327]/62">
-              Logos, project notes, and testimonials live on their own pages so
-              each piece of work can stand on its own.
+              Logos and project notes live on the work page so each piece of
+              work can stand on its own.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -534,12 +534,6 @@ export function Hero() {
                 className="font-mono text-sm uppercase text-primary hover:text-primary/80"
               >
                 View work
-              </Link>
-              <Link
-                href="/testimonials"
-                className="font-mono text-sm uppercase text-[#061327]/58 hover:text-[#061327]"
-              >
-                Testimonials
               </Link>
             </div>
           </div>

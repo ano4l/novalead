@@ -4,7 +4,6 @@ export const siteNavigation = [
   { name: "Pricing", href: "/pricing" },
   { name: "Work", href: "/work" },
   { name: "Process", href: "/process" },
-  { name: "Testimonials", href: "/testimonials" },
 ] as const;
 
 export const services = [
@@ -134,6 +133,7 @@ export const clients = [
 
 export const caseStudyIndustries = [
   "Automotive",
+  "Construction",
   "Healthcare",
   "HVAC",
   "Hospitality",
@@ -152,7 +152,6 @@ export const caseStudies = [
     work: "Branding and positioning support",
     summary:
       "A clearer public-facing brand presence for a commission that needed stronger positioning and presentation support.",
-    outcome: "Brand presence and positioning support.",
     pullQuote: "Brand presence and positioning support.",
     image: "/testimonial1.jpeg",
     status: "Live client",
@@ -165,9 +164,30 @@ export const caseStudies = [
     work: "Website and digital presence support",
     summary:
       "A focused web presence and supporting digital layer for a specialist operator that needed to be easier to understand online.",
-    outcome: "Website and digital presence support.",
     pullQuote: "Website and digital presence support.",
     image: "/testimonial2.png",
+    status: "Live client",
+  },
+  {
+    slug: "modern-mystery",
+    title: "Construction web presence for a multi-service builder",
+    client: "Modern Mystery",
+    industry: "Construction" as CaseStudyIndustry,
+    work: "Website development",
+    summary:
+      "A website build for a construction, building maintenance, and supplies company that needed a clearer digital presence.",
+    image: "/modern-mystery-logo-transparent.png",
+    status: "Live client",
+  },
+  {
+    slug: "joppa-construction",
+    title: "Construction website for Joppa",
+    client: "Joppa Construction",
+    industry: "Construction" as CaseStudyIndustry,
+    work: "Website development",
+    summary:
+      "A website build for a construction company, giving the brand a dedicated place to present its work online.",
+    image: "/joppa-construction-logo-transparent.png",
     status: "Live client",
   },
   {
@@ -178,11 +198,10 @@ export const caseStudies = [
     work: "E-commerce platform and WhatsApp ordering assistant",
     summary:
       "A full e-commerce platform replacing manual phone and walk-in ordering, with vehicle-based part search.",
-    outcome: "Outcome data will be added once the platform is live.",
     image: "/ferreiras_autobody_logo.jpeg",
     status: "Built · launching soon",
     videoEmbedUrl:
-      "https://player.vimeo.com/video/1205943853?h=63916cf1ca&badge=0&byline=0&dnt=1&portrait=0&title=0",
+      "https://player.vimeo.com/video/1205943853?h=63916cf1ca&badge=0&byline=0&dnt=1&loop=1&portrait=0&title=0",
     videoTitle: "Ferreira's Autobody Parts project demo",
   },
   {
@@ -193,8 +212,6 @@ export const caseStudies = [
     work: "Auris intake audit",
     summary:
       "Reserved for an approved healthcare story covering call triage, appointment routing, and lead capture once client evidence is ready.",
-    outcome: "Outcome copy pending approved client data.",
-    pullQuote: "Video or testimonial pending.",
     image: "/APSMUSM-removebg-preview.png",
     status: "Awaiting content",
   },
@@ -206,8 +223,6 @@ export const caseStudies = [
     work: "Missed-call and follow-up audit",
     summary:
       "Reserved for an HVAC story focused on after-hours enquiries, call response, and faster sales handoff once content is approved.",
-    outcome: "Outcome copy pending approved client data.",
-    pullQuote: "Video or testimonial pending.",
     status: "Awaiting content",
   },
   {
@@ -218,8 +233,6 @@ export const caseStudies = [
     work: "Booking and enquiry audit",
     summary:
       "Reserved for a hospitality story covering booking enquiries, guest questions, and smoother follow-up once client content is approved.",
-    outcome: "Outcome copy pending approved client data.",
-    pullQuote: "Video or testimonial pending.",
     status: "Awaiting content",
   },
   {
@@ -230,8 +243,6 @@ export const caseStudies = [
     work: "Lead routing and follow-up audit",
     summary:
       "Reserved for a real estate story focused on lead routing, appointment capture, and cleaner handoff once client content is approved.",
-    outcome: "Outcome copy pending approved client data.",
-    pullQuote: "Video or testimonial pending.",
     status: "Awaiting content",
   },
 ] as const;

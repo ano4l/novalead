@@ -172,12 +172,6 @@ export function CaseStudyFilter() {
                 </p>
                 <p className="mt-2">{study.work}</p>
               </div>
-              <div className="rounded-2xl border border-[#061327]/10 bg-white/68 p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#061327]/42">
-                  Outcome
-                </p>
-                <p className="mt-2">{study.outcome}</p>
-              </div>
             </div>
 
             {videoEmbedUrl ? (

@@ -25,7 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/process",
     "/products",
     "/refer",
-    "/testimonials",
     "/work",
   ];
 
