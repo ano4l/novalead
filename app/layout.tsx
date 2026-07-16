@@ -36,6 +36,11 @@ export const metadata: Metadata = {
   },
   description:
     "NovaLeads supports businesses with lead generation, sales support, branding, websites, strategy, and practical automation built around real growth.",
+  icons: {
+    icon: "/novaleads.jpeg",
+    shortcut: "/novaleads.jpeg",
+    apple: "/novaleads.jpeg",
+  },
   openGraph: {
     title: "NovaLeads",
     description:

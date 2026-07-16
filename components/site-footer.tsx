@@ -74,10 +74,22 @@ export function SiteFooter() {
               Refer a Business
             </Link>
             <Link
-              href="/privacy"
+              href="/privacy-policy"
               className="text-sm text-[#061327]/62 transition hover:text-primary"
             >
-              Privacy policy
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-sm text-[#061327]/62 transition hover:text-primary"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              href="/refund-policy"
+              className="text-sm text-[#061327]/62 transition hover:text-primary"
+            >
+              Refund Policy
             </Link>
           </div>
           <p className="mt-6 max-w-[360px] text-xs leading-6 text-[#061327]/44">
