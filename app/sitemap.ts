@@ -21,10 +21,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/contact",
     "/pricing",
+    "/privacy-policy",
     "/privacy",
     "/process",
     "/products",
     "/refer",
+    "/refund-policy",
+    "/terms",
+    "/terms-of-service",
     "/work",
   ];
 
