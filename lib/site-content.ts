@@ -1,9 +1,9 @@
 export const siteNavigation = [
-  { name: "Services", href: "/services/lead-generation" },
-  { name: "Products", href: "/products" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "Work", href: "/work" },
-  { name: "Process", href: "/process" },
+  { name: "nav.services", label: "Services", href: "/services/lead-generation" },
+  { name: "nav.products", label: "Products", href: "/products" },
+  { name: "nav.pricing", label: "Pricing", href: "/pricing" },
+  { name: "nav.work", label: "Work", href: "/work" },
+  { name: "nav.process", label: "Process", href: "/process" },
 ] as const;
 
 export const services = [

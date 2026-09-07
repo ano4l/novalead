@@ -25,6 +25,15 @@ export default function ContactPage() {
           <div className="mt-9">
             <FluidCTA label="Open audit request" />
           </div>
+          <p className="mt-8 font-mono text-sm uppercase tracking-[0.18em] text-[#061327]/44">
+            Or email us directly:
+          </p>
+          <a
+            href="mailto:euroteam@novaleadsystems.com"
+            className="mt-3 inline-block font-mono text-lg text-primary transition-colors hover:text-primary/80"
+          >
+            euroteam@novaleadsystems.com
+          </a>
         </div>
       </section>
     </PageShell>

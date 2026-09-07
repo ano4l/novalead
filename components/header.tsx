@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useTranslation } from "@/components/language-provider";
 import { siteNavigation } from "@/lib/site-content";
 import { Logo } from "./logo";
 import { MobileMenu } from "./mobile-menu";
 
 export const Header = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="fixed left-0 top-0 z-50 w-full pt-5 md:pt-8">
       <header className="container flex items-center justify-between rounded-full border border-[#061327]/10 bg-white/72 py-3 shadow-[0_18px_60px_rgba(0,32,92,0.09)] backdrop-blur-xl">
@@ -20,16 +26,19 @@ export const Header = () => {
               href={item.href}
               key={item.name}
             >
-              {item.name}
+              {t(item.name)}
             </Link>
           ))}
         </nav>
-        <Link
-          className="hidden font-mono text-sm uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80 lg:inline-flex"
-          href="/contact"
-        >
-          Contact
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Link
+            className="hidden font-mono text-sm uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80 lg:inline-flex"
+            href="/contact"
+          >
+            {t("nav.contact")}
+          </Link>
+        </div>
         <MobileMenu />
       </header>
     </div>

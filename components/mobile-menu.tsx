@@ -5,6 +5,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useTranslation } from "@/components/language-provider";
 import { siteNavigation } from "@/lib/site-content";
 
 interface MobileMenuProps {
@@ -13,6 +15,7 @@ interface MobileMenuProps {
 
 export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleLinkClick = () => {
     setIsOpen(false);
@@ -60,18 +63,21 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
                 onClick={handleLinkClick}
               className="py-2 font-sentient text-4xl tracking-[-0.06em] text-[#061327] transition-colors duration-150 ease-out hover:text-primary"
               >
-                {item.name}
+                {t(item.name)}
               </Link>
             ))}
 
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col gap-4">
               <Link
                 href="/contact"
                 onClick={handleLinkClick}
                 className="inline-block font-mono text-xl uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80"
               >
-                Contact
+                {t("nav.contact")}
               </Link>
+              <div className="pt-2">
+                <LanguageSwitcher />
+              </div>
             </div>
           </nav>
         </Dialog.Content>
