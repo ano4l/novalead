@@ -19,6 +19,7 @@ export function LanguageSwitcher() {
               : "text-[#061327]/48 hover:text-[#061327]/78",
           ].join(" ")}
           aria-pressed={locale === loc}
+          aria-label={loc === "en" ? "Switch to English" : "Mudar para português"}
         >
           {localeLabels[loc]}
         </button>

@@ -34,6 +34,9 @@ export default function ContactPage() {
           >
             euroteam@novaleadsystems.com
           </a>
+          <p className="mt-6 font-mono text-sm uppercase tracking-[0.18em] text-[#061327]/44">
+            Euro team contact: +351 911 709 681
+          </p>
         </div>
       </section>
     </PageShell>
