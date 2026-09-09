@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Calculator } from "lucide-react";
 import { FluidCTA } from "@/components/fluid-cta";
+import { useTranslation } from "@/components/language-provider";
 
 const WEEKS_PER_MONTH = 4.3;
 const ESTIMATED_CLOSE_RATE = 0.25;
@@ -19,6 +20,7 @@ function toPositiveNumber(value: string) {
 }
 
 export function AuditCostCalculator() {
+  const { t } = useTranslation();
   const [missedLeads, setMissedLeads] = useState("8");
   const [averageValue, setAverageValue] = useState("2500");
 
@@ -39,15 +41,15 @@ export function AuditCostCalculator() {
             <Calculator className="h-5 w-5" aria-hidden="true" />
           </div>
           <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/46">
-            Audit calculator
+            {t("Audit calculator")}
           </p>
           <h2 className="mt-5 max-w-[12ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] md:text-7xl">
-            What missed leads may cost.
+            {t("What missed leads may cost.")}
           </h2>
           <p className="mt-6 max-w-[560px] text-base leading-8 text-[#061327]/62">
-            A quick estimate for the audit conversation, using a conservative
-            working close-rate assumption until Miguel signs off the final
-            formula.
+            {t(
+              "A quick estimate for the audit conversation, using a conservative working close-rate assumption until Miguel signs off the final formula."
+            )}
           </p>
         </div>
 
@@ -55,7 +57,7 @@ export function AuditCostCalculator() {
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
               <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-[#061327]/54">
-                Missed calls/leads per week
+                {t("Missed calls/leads per week")}
               </span>
               <input
                 min="0"
@@ -69,7 +71,7 @@ export function AuditCostCalculator() {
 
             <label className="block">
               <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-[#061327]/54">
-                Average job/client value
+                {t("Average job/client value")}
               </span>
               <input
                 min="0"
@@ -87,20 +89,20 @@ export function AuditCostCalculator() {
             aria-live="polite"
           >
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary/70">
-              Estimated monthly revenue leak
+              {t("Estimated monthly revenue leak")}
             </p>
             <p className="mt-3 font-sentient text-5xl leading-none tracking-[-0.08em] text-primary md:text-6xl">
               {currencyFormatter.format(estimatedMonthlyLeak)}
             </p>
             <p className="mt-4 text-sm leading-6 text-[#061327]/56">
-              Calculation: missed leads per week x 4.3 weeks x average value x
-              25% estimated close rate. Final assumption needs sign-off before
-              production launch.
+              {t(
+                "Calculation: missed leads per week x 4.3 weeks x average value x 25% estimated close rate. Final assumption needs sign-off before production launch."
+              )}
             </p>
           </div>
 
           <div className="mt-6">
-            <FluidCTA label="Book Your AI Business Audit ->" compact />
+            <FluidCTA label={t("Book Your AI Business Audit ->")} compact />
           </div>
         </div>
       </div>

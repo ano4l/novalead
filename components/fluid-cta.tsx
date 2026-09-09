@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSiteSettings } from "@/hooks/use-site-settings";
+import { useTranslation } from "@/components/language-provider";
 import { submitConfiguredForm } from "@/lib/form-submission";
 
 type FluidCTAProps = {
@@ -22,6 +23,7 @@ export function FluidCTA({
     "idle" | "submitting" | "sent" | "needsDestination" | "error"
   >("idle");
   const { leadCapture } = useSiteSettings();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsMounted(true);
@@ -66,7 +68,7 @@ export function FluidCTA({
             compact ? "h-12 px-5 text-xs" : "h-16 px-7 text-sm sm:px-9",
           ].join(" ")}
         >
-          {label}
+          {t(label)}
         </motion.button>
       </motion.div>
 
@@ -110,21 +112,21 @@ export function FluidCTA({
                   >
                     <div className="flex-1">
                       <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/70">
-                        Growth audit
+                        {t("Growth audit")}
                       </p>
                       <h2 className="mt-5 max-w-[9ch] font-sentient text-5xl leading-[0.92] tracking-[-0.08em] sm:text-7xl">
-                        Let us map what grows next.
+                        {t("Let us map what grows next.")}
                       </h2>
                       <div className="mt-8 grid gap-4 text-base leading-7 text-white/78 sm:text-lg">
                         <p>
-                          We will identify the clearest growth opportunity, the
-                          bottleneck slowing it down, and the system that can
-                          help capture it.
+                          {t(
+                            "We will identify the clearest growth opportunity, the bottleneck slowing it down, and the system that can help capture it."
+                          )}
                         </p>
                         <p>
-                          Strategy, lead generation, web and software,
-                          automated business processes and AI auditing,
-                          branding, and automation can all be part of the audit.
+                          {t(
+                            "Strategy, lead generation, web and software, automated business processes and AI auditing, branding, and automation can all be part of the audit."
+                          )}
                         </p>
                       </div>
                     </div>
@@ -134,9 +136,9 @@ export function FluidCTA({
                       onSubmit={handleSubmit}
                     >
                       {[
-                        ["name", "Full name", "text"],
-                        ["email", "Work email", "email"],
-                        ["company", "Company website", "url"],
+                        ["name", t("Full name"), "text"],
+                        ["email", t("Work email"), "email"],
+                        ["company", t("Company website"), "url"],
                       ].map(([id, labelText, type]) => (
                         <div key={id}>
                           <label
@@ -159,7 +161,7 @@ export function FluidCTA({
                           htmlFor="message"
                           className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-white/68"
                         >
-                          What should we help with?
+                          {t("What should we help with?")}
                         </label>
                         <textarea
                           id="message"
@@ -175,15 +177,15 @@ export function FluidCTA({
                         className="h-12 w-full rounded-full bg-white font-medium text-[#00205c] transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"
                       >
                         {submitState === "submitting"
-                          ? "Submitting..."
-                          : "Submit request"}
+                          ? t("Submitting...")
+                          : t("Submit request")}
                       </button>
                       {submitState === "sent" && (
                         <p
                           className="text-sm leading-6 text-white/72"
                           role="status"
                         >
-                          Request sent.
+                          {t("Request sent.")}
                         </p>
                       )}
                       {submitState === "needsDestination" && (
@@ -191,8 +193,9 @@ export function FluidCTA({
                           className="text-sm leading-6 text-white/72"
                           role="status"
                         >
-                          Draft saved in this browser. Add an audit endpoint or
-                          recipient email in site settings before launch.
+                          {t(
+                            "Draft saved in this browser. Add an audit endpoint or recipient email in site settings before launch."
+                          )}
                         </p>
                       )}
                       {submitState === "error" && (
@@ -200,8 +203,9 @@ export function FluidCTA({
                           className="text-sm leading-6 text-white/72"
                           role="alert"
                         >
-                          The request could not be sent. Check the configured
-                          audit endpoint.
+                          {t(
+                            "The request could not be sent. Check the configured audit endpoint."
+                          )}
                         </p>
                       )}
                     </form>
@@ -211,7 +215,7 @@ export function FluidCTA({
                 <motion.button
                   onClick={() => setIsExpanded(false)}
                   className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-[#020816]/28 text-white transition hover:bg-[#020816]/42"
-                  aria-label="Close"
+                  aria-label={t("Close")}
                 >
                   <X className="h-5 w-5" />
                 </motion.button>

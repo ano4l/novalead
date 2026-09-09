@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Play, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { caseStudyIndustries, caseStudies } from "@/lib/site-content";
+import { useTranslation } from "@/components/language-provider";
 
 const allFilter = "All";
 const filters = [allFilter, ...caseStudyIndustries] as const;
@@ -11,6 +12,7 @@ const filters = [allFilter, ...caseStudyIndustries] as const;
 type Filter = (typeof filters)[number];
 
 export function CaseStudyFilter() {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState<Filter>(allFilter);
   const [expandedStudySlug, setExpandedStudySlug] = useState<string | null>(
     null
@@ -46,7 +48,7 @@ export function CaseStudyFilter() {
               ].join(" ")}
               aria-pressed={isActive}
             >
-              {filter}
+              {t(filter)}
             </button>
           );
         })}
@@ -64,8 +66,8 @@ export function CaseStudyFilter() {
               : "";
           const videoTitle =
             "videoTitle" in study && typeof study.videoTitle === "string"
-              ? study.videoTitle
-              : `${study.title} project video`;
+              ? t(study.videoTitle)
+              : `${t(study.title)} ${t("project video")}`;
           const pullQuote =
             "pullQuote" in study && typeof study.pullQuote === "string"
               ? study.pullQuote
@@ -95,7 +97,7 @@ export function CaseStudyFilter() {
                     type="button"
                     onClick={() => setExpandedStudySlug(null)}
                     className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white text-[#061327] shadow-[0_12px_28px_rgba(0,0,0,0.22)] transition hover:bg-[#061327] hover:text-white"
-                    aria-label={`Collapse ${study.client} demo video`}
+                    aria-label={t("Hide demo")}
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -106,12 +108,12 @@ export function CaseStudyFilter() {
                     type="button"
                     onClick={() => setExpandedStudySlug(study.slug)}
                     className="flex min-h-56 w-full cursor-pointer items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-6 text-left transition hover:border-[#0057B8]/28 focus:outline-none focus:ring-2 focus:ring-[#0057B8]/30"
-                    aria-label={`Expand ${study.client} demo video`}
+                    aria-label={t("Watch demo")}
                     aria-expanded={isExpanded}
                   >
                     <Image
                       src={image}
-                      alt={`${study.client} logo`}
+                      alt={t(`${study.client} logo`)}
                       width={640}
                       height={420}
                       className="max-h-40 w-full object-contain"
@@ -121,7 +123,7 @@ export function CaseStudyFilter() {
                   <div className="flex min-h-56 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-6">
                     <Image
                       src={image}
-                      alt={`${study.client} logo`}
+                      alt={t(`${study.client} logo`)}
                       width={640}
                       height={420}
                       className="max-h-40 w-full object-contain"
@@ -133,10 +135,10 @@ export function CaseStudyFilter() {
                   <div className="hero-signal absolute inset-x-6 top-12 h-28 opacity-70" />
                   <div className="relative z-10 mt-auto">
                     <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#061327]/42">
-                      Case study slot
+                      {t("Case study slot")}
                     </p>
                     <p className="mt-3 font-sentient text-4xl italic tracking-[-0.07em] text-primary">
-                      {study.industry}
+                      {t(study.industry)}
                     </p>
                   </div>
                 </div>
@@ -144,7 +146,7 @@ export function CaseStudyFilter() {
 
             <div className="mt-6 flex flex-wrap gap-2">
               <span className="rounded-full border border-[#0057B8]/20 bg-[#0057B8]/8 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#0057B8]">
-                {study.industry}
+                {t(study.industry)}
               </span>
               <span
                 className={[
@@ -154,23 +156,23 @@ export function CaseStudyFilter() {
                     : "border-[#061327]/10 bg-white/72 text-[#061327]/50",
                 ].join(" ")}
               >
-                {study.status}
+                {t(study.status)}
               </span>
             </div>
 
             <h2 className="mt-6 font-sentient text-4xl leading-[0.98] tracking-[-0.07em] text-[#061327]">
-              {study.title}
+              {t(study.title)}
             </h2>
             <p className="mt-5 text-base leading-7 text-[#061327]/62">
-              {study.summary}
+              {t(study.summary)}
             </p>
 
             <div className="mt-6 grid gap-3 text-sm leading-6 text-[#061327]/66">
               <div className="rounded-2xl border border-[#061327]/10 bg-white/68 p-4">
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#061327]/42">
-                  Work
+                  {t("Work")}
                 </p>
-                <p className="mt-2">{study.work}</p>
+                <p className="mt-2">{t(study.work)}</p>
               </div>
             </div>
 
@@ -188,13 +190,13 @@ export function CaseStudyFilter() {
                 ) : (
                   <Play className="h-4 w-4 fill-current" aria-hidden="true" />
                 )}
-                {isExpanded ? "Hide demo" : "Watch demo"}
+                {isExpanded ? t("Hide demo") : t("Watch demo")}
               </button>
             ) : null}
 
             {pullQuote ? (
               <blockquote className="mt-auto pt-6 font-sentient text-2xl italic leading-tight tracking-[-0.05em] text-primary">
-                &quot;{pullQuote}&quot;
+                &quot;{t(pullQuote)}&quot;
               </blockquote>
             ) : null}
             </article>

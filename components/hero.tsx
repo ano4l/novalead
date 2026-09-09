@@ -7,6 +7,7 @@ import { GL } from "./gl";
 import { Pill } from "./pill";
 import { FluidCTA } from "./fluid-cta";
 import { useSiteSettings } from "@/hooks/use-site-settings";
+import { useTranslation } from "@/components/language-provider";
 import {
   clients,
   novaProducts,
@@ -165,6 +166,7 @@ function HeroStatBlock() {
 }
 
 function StoryVisual({ index }: { index: number }) {
+  const { t } = useTranslation();
   if (index === 0) {
     return (
       <div className="story-visual mt-10 p-6">
@@ -177,7 +179,7 @@ function StoryVisual({ index }: { index: number }) {
               >
                 <span className="flow-node h-4 w-4 rounded-full bg-primary shadow-[0_0_20px_rgba(225,38,45,0.6)]" />
                 <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#061327]/66">
-                  {itemIndex + 1}. {item}
+                  {itemIndex + 1}. {t(item)}
                 </span>
               </div>
             )
@@ -202,11 +204,11 @@ function StoryVisual({ index }: { index: number }) {
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                {item}
+                {t(item)}
               </div>
             ))}
             <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-center font-mono text-[10px] uppercase tracking-[0.12em] text-white shadow-[0_0_44px_rgba(225,38,45,0.48)]">
-              Growth
+              {t("Growth")}
             </div>
           </div>
         </div>
@@ -233,17 +235,19 @@ function StoryVisual({ index }: { index: number }) {
 }
 
 function ScrollStory() {
+  const { t } = useTranslation();
   return (
     <section className="relative z-10 border-y border-[#061327]/10 bg-white/82 py-24 backdrop-blur-md md:py-36">
       <div className="container grid gap-12 lg:grid-cols-[0.88fr_1.12fr]">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <Pill>Growth story</Pill>
+          <Pill>{t("Growth story")}</Pill>
           <h2 className="mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-            From signal to system.
+            {t("From signal to system.")}
           </h2>
           <p className="mt-6 max-w-[520px] text-base leading-8 text-[#061327]/62">
-            Scroll through the growth path: where momentum leaks, how the
-            operating layer connects, and what changes once the system is live.
+            {t(
+              "Scroll through the growth path: where momentum leaks, how the operating layer connects, and what changes once the system is live."
+            )}
           </p>
           <div className="relative mt-10 hidden h-44 overflow-hidden rounded-[1.5rem] border border-[#061327]/12 bg-white/72 lg:block">
             <svg
@@ -279,18 +283,18 @@ function ScrollStory() {
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
-                    {item.step} / {item.eyebrow}
+                    {item.step} / {t(item.eyebrow)}
                   </p>
                   <h3 className="mt-8 max-w-[11ch] font-sentient text-5xl leading-[0.94] tracking-[-0.08em] text-[#061327] md:text-6xl">
-                    {item.title}
+                    {t(item.title)}
                   </h3>
                 </div>
                 <span className="hidden rounded-full border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-primary sm:inline-flex">
-                  {item.metric}
+                  {t(item.metric)}
                 </span>
               </div>
               <p className="mt-16 max-w-[54ch] text-lg leading-8 text-[#061327]/66">
-                {item.body}
+                {t(item.body)}
               </p>
               <StoryVisual index={index} />
             </article>
@@ -302,6 +306,7 @@ function ScrollStory() {
 }
 
 function PoweredByNova() {
+  const { t } = useTranslation();
   return (
     <section
       id="products"
@@ -309,21 +314,21 @@ function PoweredByNova() {
     >
       <div className="container grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <Pill>Powered by Nova</Pill>
+          <Pill>{t("Powered by Nova")}</Pill>
           <h2 className="mt-7 max-w-[11ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-            Products that keep growth moving.
+            {t("Products that keep growth moving.")}
           </h2>
           <p className="mt-6 max-w-[560px] text-base leading-8 text-[#061327]/62">
-            SiteRent, BizStack, and Auris are Nova-built products: practical software
-            layers for businesses that need a sharper web presence, a
-            cleaner operating system, and a receptionist that never sleeps.
+            {t(
+              "SiteRent, BizStack, and Auris are Nova-built products: practical software layers for businesses that need a sharper web presence, a cleaner operating system, and a receptionist that never sleeps."
+            )}
           </p>
 
           <div className="product-panel nova-card relative mt-10 overflow-hidden rounded-[2rem] p-5">
             <div className="relative z-10 rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
               <Image
                 src="/poweredbynova.jpeg"
-                alt="Powered by Nova products: SiteRent and BizStack"
+                alt={t("Powered by Nova products: SiteRent and BizStack")}
                 width={720}
                 height={360}
                 className="mx-auto max-h-52 w-full object-contain"
@@ -376,25 +381,25 @@ function PoweredByNova() {
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42">
-                    0{index + 1} / {product.eyebrow}
+                    0{index + 1} / {t(product.eyebrow)}
                   </p>
                   <h3 className="mt-8 font-sentient text-6xl leading-none tracking-[-0.08em] text-[#061327] md:text-7xl">
-                    {product.name}
+                    {t(product.name)}
                   </h3>
                 </div>
                 <span className="hidden rounded-full border border-[#0057B8]/25 bg-[#0057B8]/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-[#0057B8] sm:inline-flex">
-                  Powered
+                  {t("Powered")}
                 </span>
               </div>
 
               <p className="mt-14 max-w-[56ch] text-lg leading-8 text-[#061327]/66">
-                {product.short}
+                {t(product.short)}
               </p>
 
               <div className="mt-10 flex min-h-48 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
                 <Image
                   src={product.image}
-                  alt={product.imageAlt}
+                  alt={t(product.imageAlt)}
                   width={product.imageWidth}
                   height={product.imageHeight}
                   className="max-h-40 w-full object-contain"
@@ -408,7 +413,7 @@ function PoweredByNova() {
                     className="flex items-center justify-between gap-4 rounded-2xl border border-[#061327]/12 bg-white/70 px-5 py-4"
                   >
                     <span className="text-base text-[#061327]/76">
-                      {feature}
+                      {t(feature)}
                     </span>
                     <span className="h-2 w-12 rounded-full bg-[linear-gradient(90deg,#0057B8,#E1262D)]" />
                   </div>
@@ -429,7 +434,7 @@ function PoweredByNova() {
               </div>
 
               <span className="mt-10 inline-block font-mono text-xs uppercase text-primary opacity-70 transition group-hover:opacity-100">
-                View product
+                {t("View product")}
               </span>
             </Link>
           ))}
@@ -441,6 +446,7 @@ function PoweredByNova() {
 
 export function Hero() {
   const [hovering, setHovering] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <main className="relative z-10">
@@ -449,15 +455,15 @@ export function Hero() {
         <div className="hero-signal pointer-events-none absolute inset-x-[16%] top-[22%] z-[1] h-44 opacity-80" />
         <HeroTrendline />
         <div className="container relative z-10 mt-auto pb-16 pt-36 text-center">
-          <Pill className="mb-6">NovaLeads Growth Partner</Pill>
+          <Pill className="mb-6">{t("NovaLeads Growth Partner")}</Pill>
           <h1 className="mx-auto max-w-[920px] font-sentient text-5xl leading-[0.93] tracking-[-0.08em] text-[#061327] sm:text-6xl md:text-7xl lg:text-[7.5rem]">
-            Unlock your <br />
-            <i className="font-light">future</i> growth
+            {t("Unlock your")} <br />
+            <i className="font-light">{t("future")}</i> {t("growth")}
           </h1>
           <p className="mx-auto mt-8 max-w-[650px] text-balance font-mono text-sm leading-7 text-[#061327]/62 sm:text-base">
-            We are the future and the future is here. Leads, web, software, AI
-            reception, brand, strategy, and automation built as one growth
-            system.
+            {t(
+              "We are the future and the future is here. Leads, web, software, AI reception, brand, strategy, and automation built as one growth system."
+            )}
           </p>
 
           <div
@@ -479,16 +485,16 @@ export function Hero() {
         <div className="container">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <Pill>Services</Pill>
+              <Pill>{t("Services")}</Pill>
               <h2 className="mt-7 max-w-[11ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-                Built around growth, not noise.
+                {t("Built around growth, not noise.")}
               </h2>
             </div>
             <Link
               href="/services/lead-generation"
               className="font-mono text-sm uppercase text-primary hover:text-primary/80"
             >
-              Explore services
+              {t("Explore services")}
             </Link>
           </div>
 
@@ -500,16 +506,16 @@ export function Hero() {
                 className="nova-card group min-h-[330px] rounded-[2rem] p-7 transition duration-300 hover:-translate-y-1 hover:border-primary/45 md:min-h-[30rem]"
               >
                 <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/42 md:min-h-9">
-                  0{index + 1} / {service.eyebrow}
+                  0{index + 1} / {t(service.eyebrow)}
                 </p>
                 <h3 className="mt-8 font-sentient text-4xl leading-none tracking-[-0.07em] text-[#061327] md:min-h-36">
-                  {service.title}
+                  {t(service.title)}
                 </h3>
                 <p className="mt-12 min-h-0 max-w-[30ch] text-base leading-7 text-[#061327]/64 md:min-h-28">
-                  {service.short}
+                  {t(service.short)}
                 </p>
                 <span className="mt-7 inline-block font-mono text-xs uppercase text-primary opacity-70 transition group-hover:opacity-100">
-                  View detail
+                  {t("View detail")}
                 </span>
               </Link>
             ))}
@@ -520,20 +526,21 @@ export function Hero() {
       <section className="relative z-10 bg-white py-24 md:py-32">
         <div className="container grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
-            <Pill>People worked with</Pill>
+            <Pill>{t("People worked with")}</Pill>
             <h2 className="mt-7 max-w-[12ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-              Proof in the work.
+              {t("Proof in the work.")}
             </h2>
             <p className="mt-6 max-w-[520px] text-base leading-8 text-[#061327]/62">
-              Logos and project notes live on the work page so each piece of
-              work can stand on its own.
+              {t(
+                "Logos and project notes live on the work page so each piece of work can stand on its own."
+              )}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/work"
                 className="font-mono text-sm uppercase text-primary hover:text-primary/80"
               >
-                View work
+                {t("View work")}
               </Link>
             </div>
           </div>
@@ -547,14 +554,14 @@ export function Hero() {
                 <div className="flex min-h-52 items-center justify-center rounded-[1.5rem] bg-white p-5">
                   <Image
                     src={client.image}
-                    alt={`${client.name} logo`}
+                    alt={t(`${client.name} logo`)}
                     width={520}
                     height={320}
                     className="max-h-40 w-full object-contain"
                   />
                 </div>
                 <p className="mt-4 font-sentient text-2xl italic tracking-[-0.05em] text-primary">
-                  {client.work}
+                  {t(client.work)}
                 </p>
               </article>
             ))}
@@ -565,15 +572,15 @@ export function Hero() {
       <section className="relative z-10 border-y border-[#061327]/10 bg-white/86 py-24 backdrop-blur-md md:py-32">
         <div className="container grid gap-12 lg:grid-cols-[0.82fr_1.18fr]">
           <div>
-            <Pill>Method</Pill>
+            <Pill>{t("Method")}</Pill>
             <h2 className="mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-              Diagnose. Design. Deploy.
+              {t("Diagnose. Design. Deploy.")}
             </h2>
             <Link
               href="/process"
               className="mt-8 inline-block font-mono text-sm uppercase text-primary hover:text-primary/80"
             >
-              See process
+              {t("See process")}
             </Link>
           </div>
           <div className="grid gap-4">
@@ -587,10 +594,10 @@ export function Hero() {
                 </span>
                 <div>
                   <h3 className="font-sentient text-4xl tracking-[-0.07em] text-[#061327]">
-                    {step.title}
+                    {t(step.title)}
                   </h3>
                   <p className="mt-3 max-w-[48ch] text-base leading-7 text-[#061327]/62">
-                    {step.body}
+                    {t(step.body)}
                   </p>
                 </div>
               </article>
@@ -601,20 +608,21 @@ export function Hero() {
 
       <section className="relative z-10 bg-white py-24 text-center md:py-32">
         <div className="container">
-          <Pill>Next step</Pill>
+          <Pill>{t("Next step")}</Pill>
           <h2 className="mx-auto mt-7 max-w-[10ch] font-sentient text-5xl leading-[0.95] tracking-[-0.08em] text-[#061327] md:text-7xl">
-            Let us map what grows next.
+            {t("Let us map what grows next.")}
           </h2>
           <p className="mx-auto mt-6 max-w-[580px] text-base leading-8 text-[#061327]/62">
-            The audit turns growth ambition into a practical plan across lead
-            flow, websites, software, AI support, and automation.
+            {t(
+              "The audit turns growth ambition into a practical plan across lead flow, websites, software, AI support, and automation."
+            )}
           </p>
           <div
             className="mt-10"
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
           >
-            <FluidCTA label="Start the audit" />
+            <FluidCTA label={t("Start the audit")} />
           </div>
         </div>
       </section>
