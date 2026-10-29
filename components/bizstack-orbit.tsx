@@ -9,10 +9,10 @@ export function BizStackOrbit() {
           { label: "AI", x: 0, y: 50 },
           { label: "Sales", x: 50, y: 0 },
         ].map(({ label, x, y }) => (
-          <span key={label} className="bizstack-orbit-node" style={{ left: `${x}%`, top: `${y}%` }}>{label}</span>
+          <span key={label} className="bizstack-orbit-node" style={{ left: `${x}%`, top: `${y}%` }}><span className="bizstack-orbit-label">{label}</span></span>
         ))}
-        <span className="bizstack-orbit-center">Growth</span>
       </div>
+      <span className="bizstack-orbit-center" aria-hidden="true">Growth</span>
     </div>
   );
 }
