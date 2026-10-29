@@ -85,6 +85,11 @@ body::selection {
   pointer-events: none;
 }
 
+/* Canvas adds pointer-events inline; decorative descendants must never block links. */
+#webgl * {
+  pointer-events: none !important;
+}
+
 #webgl canvas {
   height: 100%;
   width: 100%;

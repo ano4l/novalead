@@ -26,7 +26,7 @@ export const GL = ({ hovering, quality = "medium" }: GLProps) => {
   const manualTime = 0;
 
   return (
-    <div id="webgl">
+    <div id="webgl" aria-hidden="true">
       <Canvas
         dpr={isHighQuality ? [1, 1.4] : [1, 1.15]}
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
