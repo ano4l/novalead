@@ -1,9 +1,7 @@
 export const siteNavigation = [
-  { name: "nav.services", label: "Services", href: "/services/lead-generation" },
-  { name: "nav.products", label: "Products", href: "/products" },
-  { name: "nav.pricing", label: "Pricing", href: "/pricing" },
-  { name: "nav.work", label: "Work", href: "/work" },
-  { name: "nav.process", label: "Process", href: "/process" },
+  { name: "Our Process", label: "Our Process", href: "/#process" },
+  { name: "Nova Intelligence", label: "Nova Intelligence", href: "/nova-intelligence" },
+  { name: "BizStack", label: "BizStack", href: "/bizstack" },
 ] as const;
 
 export const services = [
@@ -197,12 +195,21 @@ export const caseStudies = [
     industry: "Automotive" as CaseStudyIndustry,
     work: "E-commerce platform and WhatsApp ordering assistant",
     summary:
-      "A full e-commerce platform replacing manual phone and walk-in ordering, with vehicle-based part search.",
+      "BizStack connects POSIBOLT stock and sales data to an online store and WhatsApp ordering assistant. Built and launching soon; measured results are not yet available.",
     image: "/ferreiras_autobody_logo.jpeg",
     status: "Built · launching soon",
     videoEmbedUrl:
       "https://player.vimeo.com/video/1205943853?h=63916cf1ca&badge=0&byline=0&dnt=1&loop=1&portrait=0&title=0",
     videoTitle: "Ferreira's Autobody Parts project demo",
+  },
+  {
+    slug: "diplomatic-informer",
+    title: "A platform for trade and investment facilitation",
+    client: "The Diplomatic Informer Investments",
+    industry: "Professional Services" as CaseStudyIndustry,
+    work: "Website, facilitation platform and brand system",
+    summary: "A live platform for screened investor enquiries, business listings, advertising and events, supported by a consistent document suite.",
+    status: "Live client",
   },
   {
     slug: "healthcare-intake",

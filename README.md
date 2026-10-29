@@ -1,6 +1,6 @@
 # NovaLeads
 
-NovaLeads is a Next.js marketing site for an AI-powered lead generation business focused on service companies and SMEs.
+NovaLeads is a Next.js site for growth systems serving South African businesses and institutions. The primary journey is Home → Nova Intelligence or BizStack → Growth Audit.
 
 ## Stack
 
@@ -44,3 +44,19 @@ Empty values are intentional until Miguel provides the final inputs:
 ## Vercel
 
 This repository is structured so Vercel can deploy it directly from the repo root with the default Next.js settings.
+
+## Website brief implementation
+
+- `/`: approved animated hero, process, two solution cards and growth-audit section.
+- `/nova-intelligence`: market research, self-hosted LawOS demonstration and capabilities, and the RiskOS/AuditOS pipeline.
+- `/bizstack`: integration overview, approved orbit visual, SME growth system, benefits and supplied case studies.
+- Existing product, service, work and legal routes remain accessible.
+- English and Portuguese copy uses `lib/i18n.ts` and the existing language provider.
+
+The LawOS video and poster are served from `public/`. Ferreira's is labelled built/launching soon; no measured results are claimed. RiskOS and AuditOS are labelled in development. Unprovided dashboard screenshots, pipeline descriptions and current-project details are omitted.
+
+## Audit requests and analytics
+
+When no audit destination is configured, the form clearly offers to save a local draft. The draft is restored when the form is reopened; nothing is sent. Configure the endpoint or existing recipient fields to enable delivery. An email fallback opens a draft in the visitor's email application and does not report it as sent.
+
+`lib/analytics.ts` emits `book_growth_audit` and `open_lawos_demo` into `window.dataLayer` and as `novaleads:analytics` browser events. Connect the project's analytics collector to report these events; no reporting account is bundled.

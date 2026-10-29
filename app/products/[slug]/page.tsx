@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { BizStackOrbit } from "@/components/bizstack-orbit";
 import { PageShell } from "@/components/page-shell";
 import { getNovaProduct, novaProducts } from "@/lib/site-content";
 
@@ -92,13 +93,13 @@ export default async function ProductPage({
         <div className="nova-card mt-5 overflow-hidden rounded-[2rem] p-6 md:p-8">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div className="rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
-              <Image
+              {product.slug === "bizstack" ? <BizStackOrbit /> : <Image
                 src={product.image}
                 alt={product.imageAlt}
                 width={product.imageWidth}
                 height={product.imageHeight}
                 className="mx-auto max-h-56 w-full object-contain"
-              />
+              />}
             </div>
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#061327]/46">

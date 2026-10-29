@@ -21,7 +21,8 @@ const originalText = new Map<Text, { raw: string; source: string }>();
 const translatedAttributes = new Map<Element, Map<string, string>>();
 
 export function translateSource(source: string, locale: Locale): string {
-  if (locale === "en" || !source) return source;
+  if (!source) return source;
+  if (locale === "en") return translations.en[source] ?? source;
   const fromKeyed = translations[locale]?.[source];
   if (fromKeyed) return fromKeyed;
   const trimmed = source.trim();

@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
             "rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-150",
             locale === loc
               ? "bg-primary text-white shadow-[0_2px_10px_rgba(0,87,184,0.25)]"
-              : "text-[#061327]/48 hover:text-[#061327]/78",
+              : "text-[#4A5270] hover:text-[#0A2463]",
           ].join(" ")}
           aria-pressed={locale === loc}
           aria-label={loc === "en" ? "Switch to English" : "Mudar para português"}

@@ -20,6 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/contact",
+    "/nova-intelligence",
+    "/bizstack",
     "/pricing",
     "/privacy-policy",
     "/privacy",

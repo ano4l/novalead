@@ -8,7 +8,7 @@ import { submitConfiguredForm } from "@/lib/form-submission";
 export function ReferBusinessForm() {
   const { t } = useTranslation();
   const [submitState, setSubmitState] = useState<
-    "idle" | "submitting" | "sent" | "needsDestination" | "error"
+    "idle" | "submitting" | "sent" | "emailPrepared" | "needsDestination" | "error"
   >("idle");
   const { leadCapture } = useSiteSettings();
 
@@ -25,7 +25,7 @@ export function ReferBusinessForm() {
         subject: "NovaLeads business referral",
       });
 
-      setSubmitState(result === "sent" ? "sent" : "needsDestination");
+      setSubmitState(result);
     } catch {
       setSubmitState("error");
     }
@@ -104,17 +104,18 @@ export function ReferBusinessForm() {
             {t("Referral sent.")}
           </p>
         )}
+        {submitState === "emailPrepared" && <p className="text-sm leading-6 text-[#061327]/70" role="status">{t("Your email draft is ready. Send it from your email app to complete your request.")}</p>}
         {submitState === "needsDestination" && (
           <p className="text-sm leading-6 text-[#061327]/58" role="status">
             {t(
-              "Draft saved in this browser. Add a referral endpoint or recipient email in site settings before launch."
+              "Your referral is saved on this device. Contact our team to send it."
             )}
           </p>
         )}
         {submitState === "error" && (
           <p className="text-sm leading-6 text-[#061327]/58" role="alert">
             {t(
-              "The referral could not be sent. Check the configured referral endpoint."
+              "We could not save or send your referral. Please try again or contact our team."
             )}
           </p>
         )}

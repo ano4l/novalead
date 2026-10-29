@@ -1,46 +1,28 @@
 "use client";
 
-import { type FormEvent, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import * as Dialog from "@radix-ui/react-dialog";
+import Link from "next/link";
 import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { type FormEvent, useId, useState } from "react";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { useTranslation } from "@/components/language-provider";
 import { submitConfiguredForm } from "@/lib/form-submission";
+import { trackSiteEvent } from "@/lib/analytics";
 
-type FluidCTAProps = {
-  label?: string;
-  compact?: boolean;
-};
+type FluidCTAProps = { label?: string; compact?: boolean };
 
-export function FluidCTA({
-  label = "Book a growth audit",
-  compact = false,
-}: FluidCTAProps) {
+export function FluidCTA({ label = "Book a growth audit", compact = false }: FluidCTAProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [submitState, setSubmitState] = useState<
-    "idle" | "submitting" | "sent" | "needsDestination" | "error"
-  >("idle");
+  const [savedDraft, setSavedDraft] = useState<Record<string, string>>({});
+  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "sent" | "emailPrepared" | "needsDestination" | "error">("idle");
   const { leadCapture } = useSiteSettings();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = isExpanded ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isExpanded]);
+  const fieldId = useId();
+  const hasDestination = Boolean(leadCapture.auditFormEndpoint || leadCapture.auditRecipientEmail);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitState("submitting");
-
     try {
       const result = await submitConfiguredForm({
         endpoint: leadCapture.auditFormEndpoint,
@@ -49,181 +31,61 @@ export function FluidCTA({
         storageKey: "novaleads:audit-request-draft",
         subject: "NovaLeads growth audit request",
       });
-
-      setSubmitState(result === "sent" ? "sent" : "needsDestination");
+      setSubmitState(result);
     } catch {
       setSubmitState("error");
     }
   }
 
-  return (
-    <>
-      <motion.div className="relative inline-block">
-        <div className="absolute inset-0 rounded-full bg-primary shadow-[0_0_44px_rgba(225,38,45,0.34)]" />
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setIsExpanded(true)}
-          className={[
-            "relative rounded-full font-mono uppercase tracking-[0.12em] text-white",
-            compact ? "h-12 px-5 text-xs" : "h-16 px-7 text-sm sm:px-9",
-          ].join(" ")}
-        >
-          {t(label)}
-        </motion.button>
-      </motion.div>
+  function handleOpenChange(open: boolean) {
+    if (open) {
+      setSavedDraft({});
+      setSubmitState("idle");
+      try {
+        const draft: unknown = JSON.parse(localStorage.getItem("novaleads:audit-request-draft") || "null");
+        if (draft && typeof draft === "object" && !Array.isArray(draft)) {
+          setSavedDraft(Object.fromEntries(Object.entries(draft).filter(([, value]) => typeof value === "string")));
+        }
+      } catch {
+        setSavedDraft({});
+      }
+    }
+    setIsExpanded(open);
+  }
 
-      {isMounted &&
-        createPortal(
-          <AnimatePresence initial={false}>
-            {isExpanded && (
-              <motion.div
-                key="cta-backdrop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="fixed inset-0 z-[100] bg-[#020816]/24"
-              />
-            )}
-
-            {isExpanded && (
-              <motion.div
-                key="cta-modal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                className="fixed inset-0 z-[101] flex h-svh w-screen overflow-hidden bg-primary text-white shadow-[0_30px_120px_rgba(0,32,92,0.34)]"
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 1.14 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.42, delay: 0.04, ease: "easeOut" }}
-                  className="fluid-cta-gradient pointer-events-none absolute inset-0"
-                />
-
-                <div className="relative z-10 h-full w-full overflow-y-auto scrollbar-hide">
-                  <motion.div
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.28, delay: 0.12, ease: "easeOut" }}
-                    className="mx-auto flex min-h-full w-full max-w-[1120px] flex-col gap-10 p-7 pt-16 sm:p-10 lg:flex-row lg:items-center lg:p-16"
-                  >
-                    <div className="flex-1">
-                      <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/70">
-                        {t("Growth audit")}
-                      </p>
-                      <h2 className="mt-5 max-w-[9ch] font-sentient text-5xl leading-[0.92] tracking-[-0.08em] sm:text-7xl">
-                        {t("Let us map what grows next.")}
-                      </h2>
-                      <div className="mt-8 grid gap-4 text-base leading-7 text-white/78 sm:text-lg">
-                        <p>
-                          {t(
-                            "We will identify the clearest growth opportunity, the bottleneck slowing it down, and the system that can help capture it."
-                          )}
-                        </p>
-                        <p>
-                          {t(
-                            "Strategy, lead generation, web and software, automated business processes and AI auditing, branding, and automation can all be part of the audit."
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <form
-                      className="flex-1 space-y-4 rounded-[1.5rem] border border-white/14 bg-[#020816]/42 p-5 backdrop-blur-xl sm:p-7"
-                      onSubmit={handleSubmit}
-                    >
-                      {[
-                        ["name", t("Full name"), "text"],
-                        ["email", t("Work email"), "email"],
-                        ["company", t("Company website"), "url"],
-                      ].map(([id, labelText, type]) => (
-                        <div key={id}>
-                          <label
-                            htmlFor={id}
-                            className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-white/68"
-                          >
-                            {labelText}
-                          </label>
-                          <input
-                            id={id}
-                            name={id}
-                            type={type}
-                            required={id !== "company"}
-                            className="h-12 w-full rounded-xl border border-white/10 bg-[#020816]/50 px-4 text-white outline-none transition focus:border-white/35"
-                          />
-                        </div>
-                      ))}
-                      <div>
-                        <label
-                          htmlFor="message"
-                          className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-white/68"
-                        >
-                          {t("What should we help with?")}
-                        </label>
-                        <textarea
-                          id="message"
-                          name="message"
-                          rows={4}
-                          required
-                          className="w-full resize-none rounded-xl border border-white/10 bg-[#020816]/50 px-4 py-3 text-white outline-none transition focus:border-white/35"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={submitState === "submitting"}
-                        className="h-12 w-full rounded-full bg-white font-medium text-[#00205c] transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"
-                      >
-                        {submitState === "submitting"
-                          ? t("Submitting...")
-                          : t("Submit request")}
-                      </button>
-                      {submitState === "sent" && (
-                        <p
-                          className="text-sm leading-6 text-white/72"
-                          role="status"
-                        >
-                          {t("Request sent.")}
-                        </p>
-                      )}
-                      {submitState === "needsDestination" && (
-                        <p
-                          className="text-sm leading-6 text-white/72"
-                          role="status"
-                        >
-                          {t(
-                            "Draft saved in this browser. Add an audit endpoint or recipient email in site settings before launch."
-                          )}
-                        </p>
-                      )}
-                      {submitState === "error" && (
-                        <p
-                          className="text-sm leading-6 text-white/72"
-                          role="alert"
-                        >
-                          {t(
-                            "The request could not be sent. Check the configured audit endpoint."
-                          )}
-                        </p>
-                      )}
-                    </form>
-                  </motion.div>
-                </div>
-
-                <motion.button
-                  onClick={() => setIsExpanded(false)}
-                  className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-[#020816]/28 text-white transition hover:bg-[#020816]/42"
-                  aria-label={t("Close")}
-                >
-                  <X className="h-5 w-5" />
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>,
-          document.body
-        )}
-    </>
-  );
+  return <Dialog.Root open={isExpanded} onOpenChange={handleOpenChange}>
+    <Dialog.Trigger asChild>
+      <button type="button" onClick={() => trackSiteEvent("book_growth_audit")} className={`audit-trigger relative inline-flex items-center justify-center rounded-full bg-primary font-mono uppercase tracking-[0.1em] text-white shadow-[0_12px_32px_rgba(214,40,57,0.2)] transition hover:-translate-y-0.5 hover:bg-[#B81D2D] active:translate-y-0 ${compact ? "min-h-12 px-5 text-[11px]" : "min-h-14 px-7 text-xs sm:min-h-16 sm:px-9 sm:text-sm"}`}>
+        {t(label)}
+      </button>
+    </Dialog.Trigger>
+    <Dialog.Portal>
+      <Dialog.Overlay className="fixed inset-0 z-[100] bg-[#020816]/55 backdrop-blur-sm" />
+      <Dialog.Content className="audit-dialog fixed inset-3 z-[101] overflow-y-auto rounded-[24px] bg-[#B81D2D] text-white shadow-2xl sm:inset-6 lg:inset-x-[max(24px,calc((100vw-1200px)/2))] lg:inset-y-10">
+        <div className="fluid-cta-gradient pointer-events-none absolute inset-0 opacity-60" />
+        <div className="relative mx-auto grid min-h-full max-w-[1120px] items-center gap-7 px-5 pb-6 pt-16 sm:p-10 sm:pt-20 lg:grid-cols-2 lg:p-14">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-white/85">{t("Growth audit")}</p>
+            <Dialog.Title className="mt-5 max-w-[16ch] font-sentient text-4xl sm:max-w-[10ch] leading-[0.98] tracking-[-0.06em] sm:text-6xl">{t("Let us map what grows next.")}</Dialog.Title>
+            <Dialog.Description className="mt-5 max-w-lg text-base leading-7 text-white/90 sm:mt-7 sm:text-lg sm:leading-8"><span className="sm:hidden">{t("Tell us a little about your business and what you want to improve.")}</span><span className="hidden sm:inline">{t("We will identify the clearest growth opportunity, the bottleneck slowing it down, and the system that can help capture it.")}</span></Dialog.Description>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4 rounded-[20px] border border-white/20 bg-[#061327]/65 p-5 backdrop-blur-lg sm:p-7">
+            {[["name", t("Full name"), "text", "name"], ["email", t("Work email"), "email", "email"], ["company", t("Company website"), "url", "url"]].map(([name, labelText, type, autoComplete]) => <div key={name}>
+              <label htmlFor={`${fieldId}-${name}`} className="mb-2 block text-sm font-semibold text-white">{labelText}{name === "company" ? ` (${t("Optional")})` : ""}</label>
+              <input id={`${fieldId}-${name}`} name={name} defaultValue={savedDraft[name] ?? ""} type={type} autoComplete={autoComplete} required={name !== "company"} className="h-12 w-full rounded-xl border border-white/25 bg-[#061327]/55 px-4 text-base text-white outline-none focus:border-white focus:ring-2 focus:ring-white/25" />
+            </div>)}
+            <div><label htmlFor={`${fieldId}-message`} className="mb-2 block text-sm font-semibold">{t("What should we help with?")}</label><textarea id={`${fieldId}-message`} name="message" defaultValue={savedDraft.message ?? ""} rows={4} required className="w-full resize-y rounded-xl border border-white/25 bg-[#061327]/55 px-4 py-3 text-base text-white outline-none focus:border-white focus:ring-2 focus:ring-white/25" /></div>
+            <p className="text-xs leading-5 text-white/85">{t("We use your details to respond to your enquiry.")} <Link href="/privacy-policy" className="underline underline-offset-4">{t("Privacy Policy")}</Link></p>
+            {!hasDestination && <p className="text-sm leading-6 text-white/90">{t("Save your request on this device, or contact our team directly.")} <Link href="/contact" className="font-semibold underline underline-offset-4">{t("Contact us")}</Link></p>}
+            <button type="submit" disabled={submitState === "submitting"} className="min-h-12 w-full rounded-full bg-white px-5 font-semibold text-[#0A2463] transition hover:bg-[#E3ECFF] disabled:cursor-wait disabled:opacity-70">{submitState === "submitting" ? t("Submitting...") : hasDestination ? t("Submit request") : t("Save request")}</button>
+            {submitState === "sent" && <p className="text-sm leading-6" role="status">{t("Request sent.")}</p>}
+            {submitState === "emailPrepared" && <p className="text-sm leading-6" role="status">{t("Your email draft is ready. Send it from your email app to complete your request.")}</p>}
+            {submitState === "needsDestination" && <p className="text-sm leading-6" role="status">{t("Your request is saved on this device. Contact our team when you are ready to send it.")}</p>}
+            {submitState === "error" && <p className="text-sm leading-6" role="alert">{t("We could not save or send your request. Please try again or contact our team.")}</p>}
+          </form>
+        </div>
+        <Dialog.Close asChild><button type="button" className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#061327]/65 text-white transition hover:bg-[#061327]" aria-label={t("Close")}><X className="h-5 w-5" aria-hidden="true" /></button></Dialog.Close>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>;
 }

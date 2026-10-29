@@ -1,46 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslation } from "@/components/language-provider";
 import { siteNavigation } from "@/lib/site-content";
+import { FluidCTA } from "./fluid-cta";
 import { Logo } from "./logo";
 import { MobileMenu } from "./mobile-menu";
 
 export const Header = () => {
   const { t } = useTranslation();
-
-  return (
-    <div className="fixed left-0 top-0 z-50 w-full pt-5 md:pt-8">
-      <header className="container flex items-center justify-between rounded-full border border-[#061327]/10 bg-white/72 py-3 shadow-[0_18px_60px_rgba(0,32,92,0.09)] backdrop-blur-xl">
-        <Link href="/" className="inline-flex items-center">
-          <Logo className="h-10 w-10 rounded-lg p-0 md:h-11 md:w-11" />
-          <span className="ml-3 font-sentient text-3xl tracking-[-0.06em] text-[#061327] md:text-4xl">
-            NovaLeads
-          </span>
-        </Link>
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center gap-x-7 xl:gap-x-10 lg:flex">
-          {siteNavigation.map((item) => (
-            <Link
-              className="inline-block font-mono text-sm uppercase text-[#061327]/58 transition-colors duration-150 ease-out hover:text-[#061327]"
-              href={item.href}
-              key={item.name}
-            >
-              {t(item.name)}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <Link
-            className="hidden font-mono text-sm uppercase text-primary transition-colors duration-150 ease-out hover:text-primary/80 lg:inline-flex"
-            href="/contact"
-          >
-            {t("nav.contact")}
-          </Link>
-        </div>
+  const pathname = usePathname();
+  return <div className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+    <header className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 rounded-full border border-[#0A2463]/10 bg-white/90 px-4 py-3 shadow-[0_12px_48px_rgba(10,36,99,0.08)] backdrop-blur-xl sm:px-6">
+      <Link href="/" aria-label="NovaLeads home" className="inline-flex shrink-0 items-center gap-2.5 rounded-lg">
+        <Logo alt="" className="h-9 w-9 rounded-lg p-0 sm:h-10 sm:w-10" />
+        <span className="font-sentient text-[1.65rem] tracking-[-0.06em] text-[#061327] sm:text-3xl">NovaLeads</span>
+      </Link>
+      <nav aria-label={t("Main navigation")} className="hidden items-center gap-6 min-[1180px]:flex">
+        {siteNavigation.map(item => <Link key={item.name} href={item.href} aria-current={pathname === item.href ? "page" : undefined} className={`rounded-md py-2 text-sm font-semibold transition-colors hover:text-[#B81D2D] ${pathname === item.href ? "text-[#B81D2D]" : "text-[#0A2463]"}`}>{t(item.name)}</Link>)}
+      </nav>
+      <div className="flex shrink-0 items-center gap-3">
+        <div className="hidden sm:block"><LanguageSwitcher /></div>
+        <div className="hidden min-[1180px]:block"><FluidCTA compact /></div>
         <MobileMenu />
-      </header>
-    </div>
-  );
+      </div>
+    </header>
+  </div>;
 };

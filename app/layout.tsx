@@ -21,11 +21,11 @@ function getMetadataBase() {
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   title: {
-    default: "NovaLeads | Growth Partner for Businesses Ready to Move Forward",
+    default: "NovaLeads Systems | Unlock Your Future Growth",
     template: "%s | NovaLeads",
   },
   description:
-    "NovaLeads supports businesses with lead generation, sales support, branding, websites, strategy, and practical automation built around real growth.",
+    "AI, software and growth systems for South African businesses and institutions. Explore Nova Intelligence, LawOS and BizStack.",
   icons: {
     icon: "/novaleads.jpeg",
     shortcut: "/novaleads.jpeg",
@@ -56,8 +56,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LanguageProvider>
+          <a href="#main-content" className="skip-link">Skip to content</a>
           <Header />
-          {children}
+          <div id="main-content" tabIndex={-1}>{children}</div>
           <SiteFooter />
         </LanguageProvider>
       </body>

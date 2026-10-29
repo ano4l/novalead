@@ -6,7 +6,7 @@ type SubmitConfiguredFormOptions = {
   subject: string;
 };
 
-export type SubmitConfiguredFormResult = "sent" | "needsDestination";
+export type SubmitConfiguredFormResult = "sent" | "emailPrepared" | "needsDestination";
 
 function collectFormPayload(form: HTMLFormElement) {
   const data = new FormData(form);
@@ -50,6 +50,11 @@ export async function submitConfiguredForm({
       throw new Error(`Submission failed with ${response.status}`);
     }
 
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch {
+      // Delivery has succeeded even if local draft cleanup is unavailable.
+    }
     form.reset();
     return "sent";
   }
@@ -61,8 +66,7 @@ export async function submitConfiguredForm({
     mailto.searchParams.set("subject", subject);
     mailto.searchParams.set("body", formatEmailBody(payload));
     window.location.href = mailto.toString();
-    form.reset();
-    return "sent";
+    return "emailPrepared";
   }
 
   return "needsDestination";

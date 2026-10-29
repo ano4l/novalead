@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BizStackOrbit } from "@/components/bizstack-orbit";
 import { FluidCTA } from "@/components/fluid-cta";
 import { Pill } from "@/components/pill";
 import { useTranslation } from "@/components/language-provider";
@@ -111,13 +112,13 @@ export default function ProductsPage() {
                   {t(product.name)}
                 </h3>
                 <div className="mt-8 flex min-h-44 items-center justify-center rounded-[1.5rem] border border-[#061327]/10 bg-white p-5">
-                  <Image
+                  {product.slug === "bizstack" ? <BizStackOrbit /> : <Image
                     src={product.image}
                     alt={t(product.imageAlt)}
                     width={product.imageWidth}
                     height={product.imageHeight}
                     className="max-h-36 w-full object-contain"
-                  />
+                  />}
                 </div>
                 <p className="mt-8 max-w-[54ch] text-lg leading-8 text-[#061327]/66">
                   {t(product.body)}
