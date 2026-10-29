@@ -11,11 +11,12 @@ const filters = [allFilter, ...caseStudyIndustries] as const;
 
 type Filter = (typeof filters)[number];
 
-export function CaseStudyFilter() {
+export function CaseStudyFilter({ initialStudySlug }: { initialStudySlug?: string }) {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<Filter>(allFilter);
+  const initialStudy = caseStudies.find((study) => study.slug === initialStudySlug);
+  const [activeFilter, setActiveFilter] = useState<Filter>(initialStudy?.industry ?? allFilter);
   const [expandedStudySlug, setExpandedStudySlug] = useState<string | null>(
-    null
+    initialStudy && "videoEmbedUrl" in initialStudy ? initialStudy.slug : null
   );
 
   const visibleStudies = useMemo(() => {
@@ -80,6 +81,9 @@ export function CaseStudyFilter() {
           return (
             <article
               key={study.slug}
+              id={study.slug}
+              tabIndex={-1}
+              aria-labelledby={`${study.slug}-title`}
               className="nova-card flex min-h-[560px] flex-col overflow-hidden rounded-[2rem] p-5"
             >
               {videoEmbedUrl && isExpanded ? (
@@ -160,7 +164,7 @@ export function CaseStudyFilter() {
               </span>
             </div>
 
-            <h2 className="mt-6 font-sentient text-4xl leading-[0.98] tracking-[-0.07em] text-[#061327]">
+            <h2 id={`${study.slug}-title`} className="mt-6 font-sentient text-4xl leading-[0.98] tracking-[-0.07em] text-[#061327]">
               {t(study.title)}
             </h2>
             <p className="mt-5 text-base leading-7 text-[#061327]/62">

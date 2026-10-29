@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CaseStudyFilter } from "@/components/case-study-filter";
 import { PageShell } from "@/components/page-shell";
+import { caseStudies } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -9,7 +10,14 @@ export const metadata: Metadata = {
     "Filter NovaLeads work by industry across construction, healthcare, HVAC, hospitality, professional services, and real estate.",
 };
 
-export default function WorkPage() {
+export default async function WorkPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ study?: string | string[] }>;
+}) {
+  const { study } = await searchParams;
+  const selectedStudy = caseStudies.find((item) => item.slug === study);
+
   return (
     <PageShell
       eyebrow="People worked with"
@@ -17,7 +25,7 @@ export default function WorkPage() {
       intro="A focused view of the businesses NovaLeads has supported, including construction website builds and industry slots ready for approved case-study evidence."
     >
       <section className="container pb-20">
-        <CaseStudyFilter />
+        <CaseStudyFilter key={selectedStudy?.slug ?? "all"} initialStudySlug={selectedStudy?.slug} />
 
         <div className="mt-12 rounded-[2rem] border border-[#061327]/10 bg-white/72 p-6 text-center">
           <p className="mx-auto max-w-[620px] text-base leading-7 text-[#061327]/60">
